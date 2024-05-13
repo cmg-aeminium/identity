@@ -9,7 +9,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import pt.cmg.aeminium.knowledge.api.rest.SwerankerApplication;
+import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
 
 /**
  * @author Carlos Gonçalves
@@ -23,9 +23,9 @@ public class ApplicationDataRequestFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        String appName = requestContext.getHeaders().getFirst(SwerankerApplication.REQUEST_HEADER_APP_NAME);
+        String appName = requestContext.getHeaders().getFirst(KnowledgeApplication.REQUEST_HEADER_APP_NAME);
 
-        String appVersion = requestContext.getHeaders().getFirst(SwerankerApplication.REQUEST_HEADER_APP_VERSION);
+        String appVersion = requestContext.getHeaders().getFirst(KnowledgeApplication.REQUEST_HEADER_APP_VERSION);
 
         // Do some logic stuff here
         ClientApplicationData appData = new ClientApplicationData(appName, appVersion);

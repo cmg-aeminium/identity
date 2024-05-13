@@ -9,7 +9,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import pt.cmg.aeminium.knowledge.api.rest.SwerankerApplication;
+import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 
 /**
@@ -27,11 +27,11 @@ public class LanguageSetterRequestFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        String requestLanguage = requestContext.getHeaders().getFirst(SwerankerApplication.REQUEST_HEADER_LANGUAGE);
+        String requestLanguage = requestContext.getHeaders().getFirst(KnowledgeApplication.REQUEST_HEADER_LANGUAGE);
 
         Language selectedLanguage = Language.fromString(requestLanguage);
 
-        requestContext.getHeaders().add(SwerankerApplication.REQUEST_HEADER_LANGUAGE, selectedLanguage.toString());
+        requestContext.getHeaders().add(KnowledgeApplication.REQUEST_HEADER_LANGUAGE, selectedLanguage.toString());
 
         languageEventHandler.fire(selectedLanguage);
     }
