@@ -4,7 +4,6 @@
  */
 package pt.cmg.aeminium.knowledge.api.rest.resources.users.converters;
 
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.response.UserDTO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 
@@ -12,18 +11,6 @@ import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
  * @author Carlos Gonçalves
  */
 public class UserConverter {
-
-    public static User toUser(CreateUserDTO userDTO) {
-
-        User newUser = new User();
-        newUser.setName(userDTO.name);
-        newUser.setEmail(userDTO.email);
-        newUser.setLanguage(userDTO.language);
-
-        // Also get the groups
-
-        return newUser;
-    }
 
     public static UserDTO toUserDTO(User user) {
 

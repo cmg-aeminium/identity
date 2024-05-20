@@ -15,10 +15,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.converters.UserConverter;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.validators.UserValidator;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
+import pt.cmg.aeminium.knowledge.tasks.users.CreateUserDTO;
+import pt.cmg.aeminium.knowledge.tasks.users.UserCreator;
 
 /**
  * @author Carlos Gonçalves
@@ -28,6 +29,9 @@ import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 public class UserResource {
 
     private static final Logger LOGGER = Logger.getLogger(UserResource.class.getName());
+
+    @Inject
+    private UserCreator userCreator;
 
     @Inject
     private UserDAO userDAO;
@@ -42,7 +46,7 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(validationErrors.get()).build();
         }
 
-        User newUser = UserConverter.toUser(userDTO);
+        User newUser = userCreator.creatUser(userDTO);
         userDAO.create(newUser, true); // true because I need the ID
 
         return Response.ok(UserConverter.toUserDTO(newUser)).build();
