@@ -4,6 +4,8 @@
  */
 package pt.cmg.aeminium.knowledge.tasks.users;
 
+import java.util.List;
+import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 
 /**
@@ -15,4 +17,5 @@ public class CreateUserDTO {
     public String email;
     public String password;
     public Language language;
+    public List<Role.Name> roles;
 }

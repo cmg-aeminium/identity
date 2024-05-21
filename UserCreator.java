@@ -4,10 +4,13 @@
  */
 package pt.cmg.aeminium.knowledge.tasks.users;
 
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+import pt.cmg.aeminium.knowledge.dao.identity.RoleDAO;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
+import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 
@@ -22,6 +25,9 @@ public class UserCreator {
     @Inject
     private UserDAO userDAO;
 
+    @Inject
+    private RoleDAO roleDAO;
+
     public User creatUser(CreateUserDTO userDTO) {
 
         User newUser = new User();
@@ -29,6 +35,11 @@ public class UserCreator {
         newUser.setName(userDTO.name);
         newUser.setEmail(userDTO.email);
         newUser.setLanguage(userDTO.language == null ? Language.DEFAULT_LANGUAGE : userDTO.language);
+
+        List<Role> roles = roleDAO.findByNames(userDTO.roles);
+        newUser.setRoles(roles);
+
+        userDAO.create(newUser, true);
 
         return newUser;
     }
