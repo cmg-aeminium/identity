@@ -6,6 +6,7 @@ package pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.response;
 
 import java.text.Collator;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
@@ -21,6 +22,8 @@ public class UserDTO implements Comparable<UserDTO> {
     public Language language;
     public User.Status status;
     public LocalDateTime createdAt;
+
+    public List<String> roles;
 
     @Override
     public int compareTo(UserDTO o) {

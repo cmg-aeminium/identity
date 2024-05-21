@@ -9,8 +9,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,6 +38,18 @@ public class UserResource {
     @Inject
     private UserDAO userDAO;
 
+    @GET
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@PathParam("id") Long id) {
+
+        User user = userDAO.findById(id);
+
+        return Response.ok(UserConverter.toUserDTO(user)).build();
+
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -47,8 +61,6 @@ public class UserResource {
         }
 
         User newUser = userCreator.creatUser(userDTO);
-        userDAO.create(newUser, true); // true because I need the ID
-
         return Response.ok(UserConverter.toUserDTO(newUser)).build();
 
     }

@@ -4,7 +4,10 @@
  */
 package pt.cmg.aeminium.knowledge.api.rest.resources.users.converters;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.response.UserDTO;
+import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 
 /**
@@ -20,6 +23,11 @@ public class UserConverter {
         dto.email = user.getEmail();
         dto.status = user.getStatus();
         dto.language = user.getLanguage();
+
+        List<Role> roles = user.getRoles();
+        dto.roles = roles.stream().map(rl -> rl.getName().toString()).collect(Collectors.toList());
+
+        dto.createdAt = user.getCreatedAt();
 
         return dto;
 
