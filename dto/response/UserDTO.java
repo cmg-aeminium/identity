@@ -8,12 +8,14 @@ import java.text.Collator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import javax.json.bind.annotation.JsonbPropertyOrder;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 
 /**
  * @author Carlos Gonçalves
  */
+@JsonbPropertyOrder({"id", "name", "email", "language", "status", "createdAt", "roles"})
 public class UserDTO implements Comparable<UserDTO> {
 
     public Long id;
