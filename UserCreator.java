@@ -13,6 +13,7 @@ import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
+import pt.cmg.jakartautils.identity.PasswordUtils;
 
 /**
  * @author Carlos Gonçalves
@@ -38,6 +39,12 @@ public class UserCreator {
 
         List<Role> roles = roleDAO.findByNames(userDTO.roles);
         newUser.setRoles(roles);
+
+        String newSalt = PasswordUtils.generateSalt();
+        String newSaltedPassword = PasswordUtils.generateSaltedPassword(newSalt, userDTO.password);
+
+        newUser.setSalt(newSalt);
+        newUser.setPassword(newSaltedPassword);
 
         userDAO.create(newUser, true);
 
