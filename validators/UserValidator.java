@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
+import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.tasks.users.CreateUserDTO;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 
@@ -21,14 +22,20 @@ public class UserValidator {
         List<ErrorDTO> errors = new ArrayList<>();
 
         if (StringUtils.isBlank(userDTO.email)) {
-            errors.add(new ErrorDTO(1, "Email is null or empty"));
+            errors.add(new ErrorDTO(1, "Email cannot be null or empty"));
         }
 
         if (!KnowledgeApplication.isAcceptablePassword(userDTO.password, false)) {
             errors.add(new ErrorDTO(2, "Password does not comply to acceptable standards"));
         }
 
-        // now validate groups
+        if (userDTO.roles == null || userDTO.roles.isEmpty()) {
+            errors.add(new ErrorDTO(3, "Roles cannot be null or empty"));
+        } else {
+            if (userDTO.roles.contains(Role.Name.GOD)) {
+                errors.add(new ErrorDTO(4, "There is only one GOD"));
+            }
+        }
 
         return errors.isEmpty() ? Optional.empty() : Optional.of(errors);
     }

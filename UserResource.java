@@ -5,6 +5,7 @@
 package pt.cmg.aeminium.knowledge.api.rest.resources.users;
 
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
@@ -47,10 +48,10 @@ public class UserResource {
         User user = userDAO.findById(id);
 
         return Response.ok(UserConverter.toUserDTO(user)).build();
-
     }
 
     @POST
+    @RolesAllowed("GOD")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(@NotNull CreateUserDTO userDTO) {
@@ -62,7 +63,6 @@ public class UserResource {
 
         User newUser = userCreator.creatUser(userDTO);
         return Response.ok(UserConverter.toUserDTO(newUser)).build();
-
     }
 
 }
