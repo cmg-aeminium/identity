@@ -20,6 +20,7 @@ import pt.cmg.aeminium.knowledge.api.rest.resources.login.converters.LoginConver
 import pt.cmg.aeminium.knowledge.api.rest.resources.login.validators.LoginValidator;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
+import pt.cmg.aeminium.knowledge.tasks.jwt.JWTokenCreator;
 import pt.cmg.jakartautils.text.TextFormatter;
 
 /**
@@ -37,6 +38,9 @@ public class LoginResource {
     @Inject
     private LoginValidator loginValidator;
 
+    @Inject
+    private JWTokenCreator jwtokenCreator;
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -51,7 +55,7 @@ public class LoginResource {
 
         LOGGER.info(TextFormatter.formatMessageToLazyLog("User {0} logged in", user.getId()));
 
-        return Response.ok(Map.of("token", "Create Token")).build();
+        return Response.ok(Map.of("token", jwtokenCreator.generateNewToken(user))).build();
     }
 
 }
