@@ -12,6 +12,7 @@ import pt.cmg.aeminium.knowledge.dao.identity.RoleDAO;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
+import pt.cmg.aeminium.knowledge.persistence.entities.identity.User.Status;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 import pt.cmg.jakartautils.identity.PasswordUtils;
 
@@ -45,6 +46,8 @@ public class UserCreator {
 
         newUser.setSalt(newSalt);
         newUser.setPassword(newSaltedPassword);
+
+        newUser.setStatus(Status.PENDING);
 
         userDAO.create(newUser, true);
 
