@@ -90,7 +90,7 @@ public class JWTokenCreator {
         String jws = Jwts.builder()
             .header().type("JWT").and()
             .claim("upn", user.getName())
-            .subject(user.getEmail())
+            .subject(user.getId().toString())
             .issuer("aeminium-identity")
             .claim("jti", "x-atm-092")
             .issuedAt(now)
