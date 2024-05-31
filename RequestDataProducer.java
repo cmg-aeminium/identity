@@ -38,4 +38,8 @@ public class RequestDataProducer {
         requestContextData.setAppData(appData);
     }
 
+    public void observeUser(@Observes @RequestData Long userId) {
+        requestContextData.setUserId(userId);
+    }
+
 }
