@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
+import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
-import pt.cmg.aeminium.knowledge.tasks.users.CreateUserDTO;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 
 /**

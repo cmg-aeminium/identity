@@ -18,10 +18,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.converters.UserConverter;
+import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.validators.UserValidator;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
-import pt.cmg.aeminium.knowledge.tasks.users.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.tasks.users.UserCreator;
 
 /**
