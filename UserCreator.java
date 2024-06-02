@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.dao.identity.RoleDAO;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
