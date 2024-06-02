@@ -52,8 +52,24 @@ public class HazelcastCache {
         defaultTexts.putIfAbsent(String.format("%s_%s", id, language), textContent);
     }
 
+    public void replaceTranslation(TextContent defaultLangText) {
+        defaultTexts.replace(String.format("%s_%s", defaultLangText.getId(), defaultLangText.getLanguage()), defaultLangText.getTextValue());
+    }
+
+    public void replaceTranslation(TranslatedText translatedText) {
+        defaultTexts.replace(String.format("%s_%s", translatedText.getId(), translatedText.getLanguage()), translatedText.getTextValue());
+    }
+
     public String getTranslatedText(Long id) {
         return defaultTexts.get(String.format("%s_%s", id, requestData.getSelectedLanguage()));
+    }
+
+    public boolean containsText(Long id) {
+        return defaultTexts.containsKey(String.format("%s_%s", id, requestData.getSelectedLanguage()));
+    }
+
+    public boolean containsText(Long id, Language languague) {
+        return defaultTexts.containsKey(String.format("%s_%s", id, languague));
     }
 
 }
