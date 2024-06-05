@@ -12,7 +12,6 @@ import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
  * @author Carlos Gonçalves
  */
 public class CreateUserDTO {
-
     public String name;
     public String email;
     public String password;

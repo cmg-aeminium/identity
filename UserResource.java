@@ -4,7 +4,6 @@
  */
 package pt.cmg.aeminium.knowledge.api.rest.resources.users;
 
-import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -30,8 +29,6 @@ import pt.cmg.aeminium.knowledge.tasks.users.UserCreator;
 @RequestScoped
 @Path("users")
 public class UserResource {
-
-    private static final Logger LOGGER = Logger.getLogger(UserResource.class.getName());
 
     @Inject
     private UserCreator userCreator;
