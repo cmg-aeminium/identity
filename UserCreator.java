@@ -5,10 +5,12 @@
 package pt.cmg.aeminium.knowledge.tasks.users;
 
 import java.util.List;
-import java.util.logging.Logger;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
+import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.EditUserDTO;
 import pt.cmg.aeminium.knowledge.dao.identity.RoleDAO;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
@@ -21,9 +23,8 @@ import pt.cmg.jakartautils.identity.PasswordUtils;
  * @author Carlos Gonçalves
  */
 @Singleton
+@Lock(LockType.READ)
 public class UserCreator {
-
-    private static final Logger LOGGER = Logger.getLogger(UserCreator.class.getName());
 
     @Inject
     private UserDAO userDAO;
@@ -53,6 +54,34 @@ public class UserCreator {
         userDAO.create(newUser, true);
 
         return newUser;
+    }
+
+    public User editUser(Long userId, EditUserDTO userDTO) {
+
+        User editingUser = userDAO.findById(userId);
+
+        if (userDTO.name != null) {
+            editingUser.setName(userDTO.name);
+        }
+
+        if (userDTO.email != null) {
+            editingUser.setEmail(userDTO.email);
+        }
+
+        if (userDTO.language != null) {
+            editingUser.setLanguage(userDTO.language);
+        }
+        return editingUser;
+    }
+
+    public User editUserRoles(Long userId, List<Role.Name> roleNames) {
+
+        User editingUser = userDAO.findById(userId);
+
+        List<Role> roles = roleDAO.findByNames(roleNames);
+        editingUser.setRoles(roles);
+
+        return editingUser;
     }
 
 }
