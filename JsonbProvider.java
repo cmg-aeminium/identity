@@ -5,15 +5,15 @@
 package pt.cmg.aeminium.knowledge.configuration.jsonb;
 
 import java.util.Locale;
-import javax.json.bind.Jsonb;
-import javax.json.bind.JsonbBuilder;
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.annotation.JsonbDateFormat;
-import javax.json.bind.config.PropertyNamingStrategy;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.annotation.JsonbDateFormat;
+import jakarta.json.bind.config.PropertyNamingStrategy;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.ext.ContextResolver;
+import jakarta.ws.rs.ext.Provider;
 import pt.cmg.aeminium.knowledge.configuration.jsonb.deserialisers.StringToLanguageDeserialiser;
 import pt.cmg.aeminium.knowledge.configuration.jsonb.serialisers.LanguageToStringSerialiser;
 import pt.cmg.jakartautils.jsonb.deserialisers.MillisToDateDeserialiser;
