@@ -5,10 +5,10 @@
 package pt.cmg.aeminium.knowledge.api.rest.filters.request;
 
 import java.io.IOException;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 
