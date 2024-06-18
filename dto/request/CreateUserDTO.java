@@ -5,8 +5,8 @@
 package pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request;
 
 import java.util.List;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 

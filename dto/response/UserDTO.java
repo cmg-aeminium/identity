@@ -8,7 +8,7 @@ import java.text.Collator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
-import javax.json.bind.annotation.JsonbPropertyOrder;
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 
