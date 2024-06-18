@@ -5,10 +5,10 @@
 package pt.cmg.aeminium.knowledge.tasks.users;
 
 import java.util.List;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
-import javax.inject.Inject;
+import jakarta.ejb.Lock;
+import jakarta.ejb.LockType;
+import jakarta.ejb.Singleton;
+import jakarta.inject.Inject;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.EditUserDTO;
 import pt.cmg.aeminium.knowledge.dao.identity.RoleDAO;
