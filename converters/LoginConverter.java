@@ -6,7 +6,7 @@ package pt.cmg.aeminium.knowledge.api.rest.resources.login.converters;
 
 import java.security.InvalidParameterException;
 import java.util.Base64;
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 /**
  * @author Carlos Gonçalves
