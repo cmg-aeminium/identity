@@ -6,10 +6,10 @@ package pt.cmg.aeminium.knowledge.cache;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import jakarta.annotation.PostConstruct;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestContextData;
 import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestData;
 import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;

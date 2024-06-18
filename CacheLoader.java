@@ -4,6 +4,7 @@
  */
 package pt.cmg.aeminium.knowledge.cache;
 
+import jakarta.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -11,16 +12,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
-import javax.ejb.Asynchronous;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.inject.Inject;
-import javax.persistence.Cache;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.TypedQuery;
+import jakarta.ejb.Asynchronous;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.inject.Inject;
+import jakarta.persistence.Cache;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.TypedQuery;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.persistence.jpa.JpaCache;
 import pt.cmg.aeminium.knowledge.persistence.entities.knowledgebodies.KnowledgeArea;
