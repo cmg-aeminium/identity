@@ -49,27 +49,27 @@ public class HazelcastCache {
     }
 
     public void putTranslation(Long id, Language language, String textContent) {
-        defaultTexts.putIfAbsent(String.format("%s_%s", id, language), textContent);
+        defaultTexts.putIfAbsent("%s_%s".formatted(id, language), textContent);
     }
 
     public void replaceTranslation(TextContent defaultLangText) {
-        defaultTexts.replace(String.format("%s_%s", defaultLangText.getId(), defaultLangText.getLanguage()), defaultLangText.getTextValue());
+        defaultTexts.replace("%s_%s".formatted(defaultLangText.getId(), defaultLangText.getLanguage()), defaultLangText.getTextValue());
     }
 
     public void replaceTranslation(TranslatedText translatedText) {
-        defaultTexts.replace(String.format("%s_%s", translatedText.getId(), translatedText.getLanguage()), translatedText.getTextValue());
+        defaultTexts.replace("%s_%s".formatted(translatedText.getId(), translatedText.getLanguage()), translatedText.getTextValue());
     }
 
     public String getTranslatedText(Long id) {
-        return defaultTexts.get(String.format("%s_%s", id, requestData.getSelectedLanguage()));
+        return defaultTexts.get("%s_%s".formatted(id, requestData.getSelectedLanguage()));
     }
 
     public boolean containsText(Long id) {
-        return defaultTexts.containsKey(String.format("%s_%s", id, requestData.getSelectedLanguage()));
+        return defaultTexts.containsKey("%s_%s".formatted(id, requestData.getSelectedLanguage()));
     }
 
     public boolean containsText(Long id, Language languague) {
-        return defaultTexts.containsKey(String.format("%s_%s", id, languague));
+        return defaultTexts.containsKey("%s_%s".formatted(id, languague));
     }
 
 }

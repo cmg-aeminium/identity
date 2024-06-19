@@ -102,8 +102,8 @@ public class CacheLoader {
         Cache appCache = entityManagerFactory.getCache();
         appCache.evictAll();
 
-        if (appCache instanceof JpaCache) {
-            ((JpaCache) appCache).clearQueryCache();
+        if (appCache instanceof JpaCache cache) {
+            cache.clearQueryCache();
         }
 
     }
