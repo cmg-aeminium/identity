@@ -19,7 +19,7 @@ public class LoginConverter {
     public static String[] extractBasicAuthenticationCredentials(HttpHeaders headers) throws InvalidParameterException {
 
         // Basic authentication credentials come encoded as a Base64 String AFTER the String "Basic " with space, that's why substring was used
-        String authHeader = headers.getRequestHeader(HttpHeaders.AUTHORIZATION).get(0).substring("Basic ".length());
+        String authHeader = headers.getRequestHeader(HttpHeaders.AUTHORIZATION).getFirst().substring("Basic ".length());
 
         // ...and even then it comes separated by a ":"
         String[] decoded = new String(Base64.getDecoder().decode(authHeader)).split(":");
