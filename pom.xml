@@ -1,0 +1,507 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pt.cmg.aeminium</groupId>
+    <artifactId>identity</artifactId>
+    <version>1.0</version>
+
+    <name>identity</name>
+    <packaging>war</packaging>
+
+    <developers>
+        <developer>
+            <id>1</id>
+            <name>Carlos Gonçalves</name>
+            <email>carlosmoliveiragoncalves@gmail.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <repositories>
+        <repository>
+            <id>payara-nexus-artifacts</id>
+            <name>Payara Nexus Artifacts</name>
+            <url>https://nexus.payara.fish/repository/payara-artifacts</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+
+    <profiles>
+        <profile>
+            <!-- DEV is the standard profile, it is a testless, wild environment  -->
+            <id>dev</id>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!-- TEST is the standard testing environment that will run unit tests only -->
+            <id>test</id>
+            <properties>
+                <skipTests>false</skipTests>
+            </properties>
+        </profile>
+        <profile>
+            <id>debug</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>fish.payara.maven.plugins</groupId>
+                        <artifactId>payara-micro-maven-plugin</artifactId>
+                        <version>${payara-micro-plugin-version}</version>
+
+                        <configuration>
+                            <useUberJar>true</useUberJar>
+                            <javaCommandLineOptions>
+                                <option>
+                                    <value>-Xdebug</value>
+                                </option>
+                                <option>
+                                    <key>-Xrunjdwp:transport</key>
+                                    <value>dt_socket,server=y,suspend=y,address=5005</value>
+                                </option>
+                            </javaCommandLineOptions>
+                        </configuration>
+
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <properties>
+        <!--  General properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Application properties -->
+        <final.name>${project.artifactId}</final.name>
+
+        <!--JAVA version -->
+        <java-version>21</java-version>
+
+        <!-- Payara Version -->
+        <payara-version>6.2024.6</payara-version>
+        <payara-micro-plugin-version>2.3</payara-micro-plugin-version>
+
+        <domain.dir>${user.home}/modules/identity/domain</domain.dir>
+
+        <!-- Maven plugin versions -->
+        <maven-required-version>3.9.7</maven-required-version>
+        
+        <ejb-plugin-version>3.0.1</ejb-plugin-version>
+        
+        <antrun-plugin-version>3.1.0</antrun-plugin-version>
+        <clean-plugin-version>3.3.2</clean-plugin-version>
+        <compiler-plugin-version>3.13.0</compiler-plugin-version>
+        <enforcer-plugin-version>3.5.0</enforcer-plugin-version>
+        <failsafe-plugin-version>3.3.0</failsafe-plugin-version>
+        <install-plugin-version>3.1.2</install-plugin-version>
+        <jar-plugin-version>3.4.1</jar-plugin-version>
+        <resources-plugin-version>3.3.1</resources-plugin-version>
+        <rewrite-plugin-version>5.34.1</rewrite-plugin-version>
+        <rewrite-java-version>2.18.1</rewrite-java-version>
+        <surefire-plugin-version>3.3.0</surefire-plugin-version>
+        <surefire-reporting-plugin-version>3.0.0-M4</surefire-reporting-plugin-version>
+        <versions-plugin-version>2.16.2</versions-plugin-version>
+        <war-plugin-version>3.4.0</war-plugin-version>
+        
+        <!-- Library versions -->
+        <commons-lang3-version>3.14.0</commons-lang3-version>
+        <commons-validator-version>1.9.0</commons-validator-version>
+        <jjwt-version>0.12.6</jjwt-version>
+        <postresql-version>42.7.3</postresql-version>
+        
+        <!-- First party dependencies -->
+        <aem-jakarta-utils-version>3.0.0</aem-jakarta-utils-version>
+
+    </properties>
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+
+                <!-- Maven Clean  Plugin , used to clean up after build -->
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${clean-plugin-version}</version>
+                </plugin>
+
+                <!-- Maven Compiler Plugin , for JARs -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${compiler-plugin-version}</version>
+                    <configuration>
+                        <release>${java-version}</release>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven Install plugin, install the build artifacts into the LOCAL repository -->
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${install-plugin-version}</version>
+                </plugin>
+
+                <!-- Maven Resources plugin, copies the resources to output directory to include in final JAR -->
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${resources-plugin-version}</version>
+                </plugin>
+
+
+                <!-- Maven WAR Plugin, for WARs -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${war-plugin-version}</version>
+                    <configuration>
+                        <!-- Since we are using Servlet 3+ we do not need web.xml to register JAX-RS webservices so the war plugin must not fail if it doesn't find it -->
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                        <attachClasses>true</attachClasses>
+                        <classesClassifier>classes</classesClassifier>
+
+                        <archive>
+                            <addMavenDescriptor>false</addMavenDescriptor>
+                        </archive>
+
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${jar-plugin-version}</version>
+                </plugin>
+
+                <!-- Surefire plugin used for testing -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire-plugin-version}</version>
+                    <configuration>
+                        <reportsDirectory>${basedir}/../ffbuild/reports</reportsDirectory>
+                        <groups>${groups}</groups>
+                        <skipTests>${skipTests}</skipTests>
+                        <argLine> --illegal-access=permit </argLine>
+                    </configuration>
+                </plugin>
+
+                <!-- Failsafe plugin is used for integration test, but we are not using it yet, it is just to set the argLine for future reference -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${failsafe-plugin-version}</version>
+                    <configuration>
+                        <argLine> --illegal-access=permit </argLine>
+                    </configuration>
+                </plugin>
+
+                <!-- Useful for the Versions plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${enforcer-plugin-version}</version>
+                </plugin>
+
+                <!-- This plugin is useful to check newer versions of dependencies or plugins, please check the goals here
+                "https://www.mojohaus.org/versions-maven-plugin/plugin-info.html" -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-plugin-version}</version>
+                    <configuration>
+                        <processDependencyManagement>false</processDependencyManagement>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>fish.payara.maven.plugins</groupId>
+                    <artifactId>payara-micro-maven-plugin</artifactId>
+                    <version>${payara-micro-plugin-version}</version>
+                    <configuration>
+                        <javaCommandLineOptions>
+                            <option>
+                                <value>-Xms1G</value>
+                            </option>
+                            <option>
+                                <value>-Xmx1G</value>
+                            </option>
+                        </javaCommandLineOptions>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+
+            <!-- Useful for the Versions plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${maven-required-version}</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${java-version}</version>
+                                    <message>Minimum JDK supported version is ${java-version}</message>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Payara Micro bundle execution will configure the Uber JAR -->
+            <plugin>
+                <groupId>fish.payara.maven.plugins</groupId>
+                <artifactId>payara-micro-maven-plugin</artifactId>
+
+                <!-- An execution must be defined because it is not a default plugin -->
+                <executions>
+                    <execution>
+                        <id>BUNDLE</id>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <payaraVersion>${payara-version}</payaraVersion>
+                            <!-- Uncomment below to name the context root path from ROOT to whatever I want -->
+                            <!--autoDeployContextRoot>${project.artifactId}</autoDeployContextRoot-->
+                            <systemProperties>
+                                <property>
+                                    <name>payaramicro.port</name>
+                                    <value>50001</value>
+                                </property>
+                                <!--property>
+					                <name>payaramicro.rootDir</name>
+					                <value>${domain.dir}</value>
+					            </property-->
+                                <property>
+                                    <name>database.user</name>
+                                    <value>postgres</value>
+                                </property>
+                                <property>
+                                    <name>database.password</name>
+                                    <value>admin</value>
+                                </property>
+                                <property>
+                                    <name>database.host</name>
+                                    <value>localhost</value>
+                                </property>
+                                <property>
+                                    <name>database.name</name>
+                                    <value>aeminium</value>
+                                </property>
+                                <property>
+                                    <name>jpa.cache.loadAtStartup</name>
+                                    <value>true</value>
+                                </property>
+                                <property>
+                                    <name>payaramicro.minHttpThreads</name>
+                                    <value>10</value>
+                                </property>
+                                <property>
+                                    <name>payaramicro.maxHttpThreads</name>
+                                    <value>10</value>
+                                </property>
+                                <property>
+                                    <name>datasource.javaclass</name>
+                                    <value>org.postgresql.ds.PGPoolingDataSource</value>
+                                </property>
+                                <property>
+                                    <name>hazelcast.memberName</name>
+                                    <value>${final.name}</value>
+                                </property>
+                            </systemProperties>
+
+                            <!-- If I need to use hazelcast SQL querying -->
+                            <!--customJars>
+                                <artifactItem>
+                                    <groupId>com.hazelcast</groupId>
+                                    <artifactId>hazelcast-sql</artifactId>
+                                    <version>4.2.5</version>
+                                </artifactItem>
+                            </customJars-->
+
+                            <appendSystemProperties>true</appendSystemProperties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--The ANT plugin will execute Ant tasks on demand. This one is used to clean up the applications dir on domain so it won't trigger an app redeploy on startup -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${antrun-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <id>clean-app-directory</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <echo
+                                    message="Trying to delete applications domain dir"
+                                    level="info" />
+                                <delete includeEmptyDirs="true" quiet="true">
+                                    <fileset dir="${domain.dir}/applications"
+                                        includes="**/*" />
+                                </delete>
+                                <delete includeEmptyDirs="true" quiet="true">
+                                    <fileset dir="${domain.dir}/config"
+                                        includes="domain.xml, domain.xml.bak" />
+                                </delete>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>${rewrite-plugin-version}</version>
+                <configuration>
+                    <activeRecipes>
+                        <!--recipe>org.openrewrite.java.migrate.jakarta.JavaxMigrationToJakarta</recipe-->
+                        <!--recipe>org.openrewrite.java.migrate.jakarta.JakartaEE10</recipe-->
+                        <!--recipe>org.openrewrite.java.migrate.UpgradeToJava17</recipe-->
+                        <recipe>org.openrewrite.java.migrate.UpgradeToJava21</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-migrate-java</artifactId>
+                        <version>${rewrite-java-version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>fish.payara.api</groupId>
+                <artifactId>payara-bom</artifactId>
+                <version>${payara-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+    
+        <!-- Platform -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- Implementation specific - bundled with runtime -->
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-osgi-bundle</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postresql-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pt.cmg</groupId>
+            <artifactId>jakartautils</artifactId>
+            <version>${aem-jakarta-utils-version}</version>
+        </dependency>
+
+        <!-- Third-party -->
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>${commons-validator-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt-version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+            <version>${jjwt-version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
