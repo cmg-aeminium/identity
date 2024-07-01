@@ -2,11 +2,12 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.api.rest.resources.users;
+package pt.cmg.aeminium.identity.api.rest.v1.resources.users;
 
+import java.util.List;
+import javax.management.relation.Role;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import java.util.List;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,14 +21,13 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.converters.UserConverter;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.EditUserDTO;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.validators.UserValidator;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.converters.UserConverter;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.validators.UserValidator;
+import pt.cmg.aeminium.identity.tasks.users.UserCreator;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
-import pt.cmg.aeminium.knowledge.tasks.users.UserCreator;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 
 /**

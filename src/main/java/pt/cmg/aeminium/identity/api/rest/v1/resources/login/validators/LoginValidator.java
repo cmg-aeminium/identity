@@ -2,19 +2,19 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.api.rest.resources.login.validators;
+package pt.cmg.aeminium.identity.api.rest.v1.resources.login.validators;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.HttpHeaders;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
 import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
-import pt.cmg.aeminium.knowledge.api.rest.resources.login.converters.LoginConverter;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.jakartautils.errors.ErrorDTO;

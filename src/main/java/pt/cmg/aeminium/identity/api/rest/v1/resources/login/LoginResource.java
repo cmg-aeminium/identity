@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.api.rest.resources.login;
+package pt.cmg.aeminium.identity.api.rest.v1.resources.login;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -16,11 +16,11 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import pt.cmg.aeminium.knowledge.api.rest.resources.login.converters.LoginConverter;
-import pt.cmg.aeminium.knowledge.api.rest.resources.login.validators.LoginValidator;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.login.validators.LoginValidator;
+import pt.cmg.aeminium.identity.tasks.jwt.JWTokenCreator;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
-import pt.cmg.aeminium.knowledge.tasks.jwt.JWTokenCreator;
 import pt.cmg.jakartautils.text.TextFormatter;
 
 /**

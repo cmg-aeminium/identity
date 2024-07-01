@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.configuration.jsonb.deserialisers;
+package pt.cmg.aeminium.identity.configuration.jsonb.deserialisers;
 
 import java.lang.reflect.Type;
 import jakarta.json.bind.serializer.DeserializationContext;

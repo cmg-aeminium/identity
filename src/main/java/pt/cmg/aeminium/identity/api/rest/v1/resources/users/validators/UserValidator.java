@@ -2,23 +2,23 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.api.rest.resources.users.validators;
+package pt.cmg.aeminium.identity.api.rest.v1.resources.users.validators;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import javax.management.relation.Role;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
 import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
 import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestContextData;
 import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestData;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.CreateUserDTO;
-import pt.cmg.aeminium.knowledge.api.rest.resources.users.dto.request.EditUserDTO;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.Role;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 

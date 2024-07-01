@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.configuration.jsonb;
+package pt.cmg.aeminium.identity.configuration.jsonb;
 
 import java.util.Locale;
 import jakarta.json.bind.Jsonb;
@@ -14,8 +14,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
-import pt.cmg.aeminium.knowledge.configuration.jsonb.deserialisers.StringToLanguageDeserialiser;
-import pt.cmg.aeminium.knowledge.configuration.jsonb.serialisers.LanguageToStringSerialiser;
+import pt.cmg.aeminium.identity.configuration.jsonb.deserialisers.StringToLanguageDeserialiser;
+import pt.cmg.aeminium.identity.configuration.jsonb.serialisers.LanguageToStringSerialiser;
 import pt.cmg.jakartautils.jsonb.deserialisers.MillisToDateDeserialiser;
 import pt.cmg.jakartautils.jsonb.deserialisers.MillisToLocalDateTimeDeserialiser;
 import pt.cmg.jakartautils.jsonb.serialisers.DateToMillisSerialiser;
