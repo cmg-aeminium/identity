@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.tasks.jwt;
+package pt.cmg.aeminium.identity.tasks.jwt;
 import jakarta.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileReader;
