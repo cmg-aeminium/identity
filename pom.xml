@@ -127,6 +127,7 @@
         
         <!-- First party dependencies -->
         <aem-jakarta-utils-version>3.0.0</aem-jakarta-utils-version>
+        <aem-datamodel-common-version>1.0.0</aem-datamodel-common-version>
 
     </properties>
 
@@ -319,6 +320,22 @@
                                     <value>aeminium</value>
                                 </property>
                                 <property>
+                                    <name>database.port</name>
+                                    <value>5432</value>
+                                </property>
+                                <property>
+                                    <name>database.minpoolsize</name>
+                                    <value>1</value>
+                                </property>
+                                <property>
+                                    <name>database.maxpoolsize</name>
+                                    <value>10</value>
+                                </property>
+                                <property>
+                                    <name>datasource.javaclass</name>
+                                    <value>org.postgresql.ds.PGPoolingDataSource</value>
+                                </property>
+                                <property>
                                     <name>jpa.cache.loadAtStartup</name>
                                     <value>true</value>
                                 </property>
@@ -331,10 +348,6 @@
                                     <value>10</value>
                                 </property>
                                 <property>
-                                    <name>datasource.javaclass</name>
-                                    <value>org.postgresql.ds.PGPoolingDataSource</value>
-                                </property>
-                                <property>
                                     <name>hazelcast.memberName</name>
                                     <value>${final.name}</value>
                                 </property>
@@ -345,7 +358,7 @@
                                 <artifactItem>
                                     <groupId>com.hazelcast</groupId>
                                     <artifactId>hazelcast-sql</artifactId>
-                                    <version>4.2.5</version>
+                                    <version>5.3.2</version>
                                 </artifactItem>
                             </customJars-->
 
@@ -471,6 +484,11 @@
             <groupId>pt.cmg</groupId>
             <artifactId>jakartautils</artifactId>
             <version>${aem-jakarta-utils-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pt.cmg.aeminium</groupId>
+            <artifactId>datamodel-common</artifactId>
+            <version>${datamodel-common-version}</version>
         </dependency>
 
         <!-- Third-party -->
