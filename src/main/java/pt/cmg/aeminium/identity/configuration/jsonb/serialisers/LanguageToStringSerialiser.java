@@ -7,7 +7,7 @@ package pt.cmg.aeminium.identity.configuration.jsonb.serialisers;
 import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
 
 /**
  * Turns a Language enum object into its matching String form that will be printed into a JSON object of such type.

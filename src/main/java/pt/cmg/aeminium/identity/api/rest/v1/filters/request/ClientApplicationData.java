@@ -1,4 +1,4 @@
-package pt.cmg.aeminium.knowledge.api.rest.filters.request;
+package pt.cmg.aeminium.identity.api.rest.v1.filters.request;
 
 public class ClientApplicationData {
 

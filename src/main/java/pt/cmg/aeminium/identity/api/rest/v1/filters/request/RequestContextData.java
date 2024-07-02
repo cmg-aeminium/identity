@@ -2,10 +2,10 @@
  * Copyright (c) 2020 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.api.rest.filters.request;
+package pt.cmg.aeminium.identity.api.rest.v1.filters.request;
 
 import java.io.Serializable;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
 
 /**
  * This object will hold Request data that is filled in every request.

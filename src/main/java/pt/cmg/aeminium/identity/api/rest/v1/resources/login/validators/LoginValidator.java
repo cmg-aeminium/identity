@@ -13,8 +13,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.HttpHeaders;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.IdentityApplication;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
-import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
 import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.jakartautils.errors.ErrorDTO;
@@ -79,7 +79,7 @@ public class LoginValidator {
             return Optional.of(List.of(new ErrorDTO(2, "Missing parameter: password")));
         }
 
-        if (!isEmailValid(crendentials[0]) || !KnowledgeApplication.isAcceptablePassword(crendentials[1], false)) {
+        if (!isEmailValid(crendentials[0]) || !IdentityApplication.isAcceptablePassword(crendentials[1], false)) {
             return Optional.of(List.of(new ErrorDTO(3, "Invalid login credentials")));
         }
 
@@ -88,7 +88,7 @@ public class LoginValidator {
 
     private boolean isEmailValid(String email) {
 
-        if (StringUtils.isBlank(email) || email.length() > KnowledgeApplication.EMAIL_MAX_LENGTH) {
+        if (StringUtils.isBlank(email) || email.length() > IdentityApplication.EMAIL_MAX_LENGTH) {
             return false;
         }
 

@@ -2,17 +2,16 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.api.rest.filters.request;
+package pt.cmg.aeminium.identity.api.rest.v1.filters.request;
 
 import java.io.IOException;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
 
 /**
  * @author Carlos Gonçalves

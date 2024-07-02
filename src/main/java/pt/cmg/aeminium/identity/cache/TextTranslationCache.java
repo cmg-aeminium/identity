@@ -13,8 +13,8 @@ import jakarta.inject.Inject;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.TextContent;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.TranslatedText;
-import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestContextData;
-import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestData;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestContextData;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestData;
 
 /**
  * @author Carlos Gonçalves
