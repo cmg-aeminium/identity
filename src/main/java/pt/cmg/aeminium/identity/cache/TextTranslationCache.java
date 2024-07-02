@@ -2,27 +2,27 @@
  * Copyright (c) 2024 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.cache;
+package pt.cmg.aeminium.identity.cache;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
-import jakarta.annotation.PostConstruct;
 import java.util.logging.Logger;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.TextContent;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.TranslatedText;
 import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestContextData;
 import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestData;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.TextContent;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.TranslatedText;
 
 /**
  * @author Carlos Gonçalves
  */
 @ApplicationScoped
-public class HazelcastCache {
+public class TextTranslationCache {
 
-    private static final Logger LOGGER = Logger.getLogger(HazelcastCache.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TextTranslationCache.class.getName());
 
     private static final String DEFAULT_LANG_MAP_NAME = "translations";
 

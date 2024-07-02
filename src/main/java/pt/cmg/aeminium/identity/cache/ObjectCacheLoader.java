@@ -2,16 +2,17 @@
  * Copyright (c) 2019 Carlos Gonçalves (https://www.linkedin.com/in/carlosmogoncalves/)
  * Likely open-source, so copy at will, bugs will be yours as well.
  */
-package pt.cmg.aeminium.knowledge.cache;
+package pt.cmg.aeminium.identity.cache;
 
-import jakarta.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.persistence.jpa.JpaCache;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Asynchronous;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
@@ -21,19 +22,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnit;
 import jakarta.persistence.TypedQuery;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.persistence.jpa.JpaCache;
-import pt.cmg.aeminium.knowledge.persistence.entities.knowledgebodies.KnowledgeArea;
-import pt.cmg.aeminium.knowledge.persistence.entities.knowledgebodies.KnowledgeBody;
-import pt.cmg.aeminium.knowledge.persistence.entities.knowledgebodies.KnowledgeTopic;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Country;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.TextContent;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.TranslatedText;
-import pt.cmg.aeminium.knowledge.persistence.entities.schools.Course;
-import pt.cmg.aeminium.knowledge.persistence.entities.schools.CourseClass;
-import pt.cmg.aeminium.knowledge.persistence.entities.schools.CourseClassTopic;
-import pt.cmg.aeminium.knowledge.persistence.entities.schools.School;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Country;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.TextContent;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.TranslatedText;
 import pt.cmg.jakartautils.jpa.QueryUtils;
 
 /**
@@ -41,9 +33,9 @@ import pt.cmg.jakartautils.jpa.QueryUtils;
  */
 @Singleton
 @Startup
-public class CacheLoader {
+public class ObjectCacheLoader {
 
-    private static final Logger LOGGER = Logger.getLogger(CacheLoader.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ObjectCacheLoader.class.getName());
 
     @PersistenceUnit(unitName = "knowledge-data")
     private EntityManagerFactory entityManagerFactory;
@@ -62,7 +54,7 @@ public class CacheLoader {
     private Language language;
 
     @Inject
-    private HazelcastCache hazelcastCache;
+    private TextTranslationCache hazelcastCache;
 
     @PostConstruct
     public void loadCacheAtStartup() {
@@ -114,29 +106,8 @@ public class CacheLoader {
      */
     private void loadObjectCache() {
         LOGGER.log(Level.INFO, "Started loading Object cache");
-        loadSchools();
         loadCountries();
-        loadCourses();
-        loadCourseClasses();
-        loadCourseClassTopics();
-        loadKnowledgeBodies();
-        loadKnowledgeAreas();
-        loadKnowledgeTopics();
         LOGGER.log(Level.INFO, "Finished loading Object cache");
-    }
-
-    public void loadSchools() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<School> query = database.createNamedQuery(School.QUERY_FIND_ALL, School.class);
-        var schools = query.getResultList();
-
-        Set<Long> ids = schools.stream().map(School::getNameTextContentId).collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
     }
 
     public void loadCountries() {
@@ -147,108 +118,6 @@ public class CacheLoader {
         var countries = query.getResultList();
 
         Set<Long> ids = countries.stream().map(Country::getNameTextContentId).collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
-    }
-
-    public void loadCourses() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<Course> query = database.createNamedQuery(Course.QUERY_FIND_ALL, Course.class);
-        var courses = query.getResultList();
-
-        Set<Long> ids = courses
-            .stream()
-            .flatMap(course -> Stream.of(course.getNameTextContentId(), course.getDescriptionContentId()))
-            .collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
-    }
-
-    public void loadCourseClassTopics() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<CourseClass> query = database.createNamedQuery(CourseClass.QUERY_FIND_ALL, CourseClass.class);
-        var courseClasses = query.getResultList();
-
-        Set<Long> ids = courseClasses
-            .stream()
-            .flatMap(crsClass -> Stream.of(crsClass.getNameTextContentId(), crsClass.getDescriptionContentId()))
-            .collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
-    }
-
-    public void loadCourseClasses() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<CourseClassTopic> query = database.createNamedQuery(CourseClassTopic.QUERY_FIND_ALL, CourseClassTopic.class);
-        var topics = query.getResultList();
-
-        Set<Long> ids = topics
-            .stream()
-            .map(CourseClassTopic::getDescriptionContentId)
-            .collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
-    }
-
-    public void loadKnowledgeBodies() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<KnowledgeBody> query = database.createNamedQuery(KnowledgeBody.QUERY_FIND_ALL, KnowledgeBody.class);
-        var kBodies = query.getResultList();
-
-        Set<Long> ids = kBodies
-            .stream()
-            .flatMap(body -> Stream.of(body.getNameTextContentId(), body.getDescriptionContentId()))
-            .collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
-    }
-
-    public void loadKnowledgeAreas() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<KnowledgeArea> query = database.createNamedQuery(KnowledgeArea.QUERY_FIND_ALL, KnowledgeArea.class);
-        var kAreas = query.getResultList();
-
-        Set<Long> ids = kAreas
-            .stream()
-            .flatMap(kArea -> Stream.of(kArea.getNameTextContentId(), kArea.getDescriptionContentId()))
-            .collect(Collectors.toSet());
-
-        database.close();
-
-        loadTextsToHazelcastCache(ids);
-    }
-
-    public void loadKnowledgeTopics() {
-
-        EntityManager database = entityManagerFactory.createEntityManager();
-
-        TypedQuery<KnowledgeTopic> query = database.createNamedQuery(KnowledgeTopic.QUERY_FIND_ALL, KnowledgeTopic.class);
-        var topics = query.getResultList();
-
-        Set<Long> ids = topics
-            .stream()
-            .flatMap(topic -> Stream.of(topic.getNameTextContentId(), topic.getDescriptionContentId()))
-            .collect(Collectors.toSet());
 
         database.close();
 

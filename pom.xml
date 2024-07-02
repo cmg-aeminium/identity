@@ -488,7 +488,7 @@
         <dependency>
             <groupId>pt.cmg.aeminium</groupId>
             <artifactId>datamodel-common</artifactId>
-            <version>${datamodel-common-version}</version>
+            <version>${aem-datamodel-common-version}</version>
         </dependency>
 
         <!-- Third-party -->
