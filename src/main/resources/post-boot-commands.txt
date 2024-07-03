@@ -1,7 +1,7 @@
 # Creates a custom JDBC connection pool for database access
-delete-jdbc-resource jdbc/identity
+delete-jdbc-resource jdbc/aem-knowledge-data
 delete-jdbc-connection-pool identityPool
 
 create-jdbc-connection-pool --datasourceclassname org.postgresql.ds.PGPoolingDataSource --restype javax.sql.DataSource --validationmethod=auto-commit --steadypoolsize=${database.minpoolsize} --maxpoolsize=${database.maxpoolsize} --wrapjdbcobjects=true --property "User=${database.user}:Password=${database.password}:Url='jdbc:postgresql://${database.host}:${database.port}/${database.name}':stringtype=unspecified:reWriteBatchedInserts=true" identityPool
 
-create-jdbc-resource --connectionpoolid myPool jdbc/identity
+create-jdbc-resource --connectionpoolid identityPool aem-knowledge-data

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
-  <persistence-unit name="knowledge-data" transaction-type="JTA">
+  <persistence-unit name="aem-data" transaction-type="JTA">
     
-    <jta-data-source>java:global/KnowledgeDataSource</jta-data-source>
-    <jar-file>datamodel-common-1.0.0.jar</jar-file>
+    <jta-data-source>jdbc/aem-data</jta-data-source>
+    
+    <jar-file>lib/datamodel-common.jar</jar-file>
+    <jar-file>lib/datamodel-users.jar</jar-file>
+    
     <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         
     <properties>
@@ -17,8 +20,8 @@
             
       <!-- property name="javax.persistence.sql-load-script-source" value="META-INF/sql/init-data.sql"/-->
             
-      <property name="eclipselink.logging.level.sql" value="FINE"/>
-      <property name="eclipselink.logging.parameters" value="true"/>
+      <!-- property name="eclipselink.logging.level.sql" value="FINE"/-->
+      <!-- property name="eclipselink.logging.parameters" value="true"/-->
     </properties>
         
   </persistence-unit>

@@ -16,11 +16,11 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.validators.LoginValidator;
 import pt.cmg.aeminium.identity.tasks.jwt.JWTokenCreator;
-import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.jakartautils.text.TextFormatter;
 
 /**

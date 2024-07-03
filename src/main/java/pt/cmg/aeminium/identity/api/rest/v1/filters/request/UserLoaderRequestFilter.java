@@ -12,6 +12,7 @@ import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
 
 /**
  * @author Carlos Gonçalves

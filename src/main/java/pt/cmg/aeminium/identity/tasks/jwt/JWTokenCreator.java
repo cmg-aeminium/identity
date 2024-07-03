@@ -22,7 +22,7 @@ import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 
 /**
  * @author Carlos Gonçalves

@@ -5,17 +5,18 @@
 package pt.cmg.aeminium.identity.tasks.users;
 
 import java.util.List;
-import javax.management.relation.Role;
 import jakarta.ejb.Lock;
 import jakarta.ejb.LockType;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.users.dao.identity.RoleDAO;
+import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
+import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User.Status;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
-import pt.cmg.aeminium.knowledge.dao.identity.RoleDAO;
-import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
 import pt.cmg.jakartautils.identity.PasswordUtils;
 
 /**

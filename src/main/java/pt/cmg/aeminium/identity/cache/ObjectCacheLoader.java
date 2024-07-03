@@ -37,7 +37,7 @@ public class ObjectCacheLoader {
 
     private static final Logger LOGGER = Logger.getLogger(ObjectCacheLoader.class.getName());
 
-    @PersistenceUnit(unitName = "knowledge-data")
+    @PersistenceUnit(unitName = "aem-data")
     private EntityManagerFactory entityManagerFactory;
 
     // This variable can be injected into the environment to control whether it should run or not

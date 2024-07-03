@@ -4,12 +4,23 @@
  */
 package pt.cmg.aeminium.identity.api.rest.v1.resources;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.auth.LoginConfig;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.bind.Jsonb;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import jakarta.ws.rs.ext.ContextResolver;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.ApplicationDataRequestFilter;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.LanguageSetterRequestFilter;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.UserLoaderRequestFilter;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.login.LoginResource;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.UserResource;
+import pt.cmg.aeminium.identity.configuration.jsonb.JsonbProvider;
+import pt.cmg.jakartautils.errors.ConstraintViolationExceptionMapper;
 
 /**
  * @author Carlos Gonçalves
@@ -55,6 +66,31 @@ public class IdentityApplication extends Application {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> resources = new HashSet<>();
+
+        resources.add(UserResource.class);
+        resources.add(LoginResource.class);
+
+        resources.add(LanguageSetterRequestFilter.class);
+        resources.add(ApplicationDataRequestFilter.class);
+        resources.add(UserLoaderRequestFilter.class);
+        return resources;
+    }
+
+    @Override
+    public Set<Object> getSingletons() {
+        Set<Object> singletons = new HashSet<>();
+
+        ContextResolver<Jsonb> jsonbConfiguration = new JsonbProvider();
+
+        singletons.add(jsonbConfiguration);
+        singletons.add(new ConstraintViolationExceptionMapper());
+
+        return singletons;
     }
 
 }

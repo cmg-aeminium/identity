@@ -5,7 +5,6 @@
 package pt.cmg.aeminium.identity.api.rest.v1.resources.users;
 
 import java.util.List;
-import javax.management.relation.Role;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
@@ -21,13 +20,14 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
+import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.converters.UserConverter;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.validators.UserValidator;
 import pt.cmg.aeminium.identity.tasks.users.UserCreator;
-import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 
 /**
@@ -47,6 +47,9 @@ public class UserResource {
     @Inject
     private UserValidator userValidator;
 
+    @Inject
+    private UserConverter userConverter;
+
     @GET
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -56,7 +59,7 @@ public class UserResource {
 
         User user = userDAO.findById(id);
 
-        return Response.ok(UserConverter.toUserDTO(user)).build();
+        return Response.ok(userConverter.toUserDTO(user)).build();
     }
 
     @POST
@@ -70,7 +73,7 @@ public class UserResource {
         }
 
         User newUser = userCreator.creatUser(userDTO);
-        return Response.ok(UserConverter.toUserDTO(newUser)).build();
+        return Response.ok(userConverter.toUserDTO(newUser)).build();
     }
 
     @PUT
@@ -86,7 +89,7 @@ public class UserResource {
         }
 
         User newUser = userCreator.editUser(userId, userDTO);
-        return Response.ok(UserConverter.toUserDTO(newUser)).build();
+        return Response.ok(userConverter.toUserDTO(newUser)).build();
     }
 
     @PUT
@@ -100,7 +103,7 @@ public class UserResource {
         }
 
         User newUser = userCreator.editUserRoles(userId, roles);
-        return Response.ok(UserConverter.toUserDTO(newUser)).build();
+        return Response.ok(userConverter.toUserDTO(newUser)).build();
     }
 
 }

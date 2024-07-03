@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 
 /**
  * @author Carlos Gonçalves

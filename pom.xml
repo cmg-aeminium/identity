@@ -128,6 +128,7 @@
         <!-- First party dependencies -->
         <aem-jakarta-utils-version>3.0.0</aem-jakarta-utils-version>
         <aem-datamodel-common-version>1.0.0</aem-datamodel-common-version>
+        <aem-datamodel-users-version>1.0.0</aem-datamodel-users-version>
 
     </properties>
 
@@ -176,6 +177,9 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                         <attachClasses>true</attachClasses>
                         <classesClassifier>classes</classesClassifier>
+                        
+                        <!-- This way I can refer the JPA jars without changing their version on persistence.xml -->
+                        <outputFileNameMapping>@{artifactId}@.@{extension}@</outputFileNameMapping>
 
                         <archive>
                             <addMavenDescriptor>false</addMavenDescriptor>
@@ -489,6 +493,11 @@
             <groupId>pt.cmg.aeminium</groupId>
             <artifactId>datamodel-common</artifactId>
             <version>${aem-datamodel-common-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pt.cmg.aeminium</groupId>
+            <artifactId>datamodel-users</artifactId>
+            <version>${aem-datamodel-users-version}</version>
         </dependency>
 
         <!-- Third-party -->

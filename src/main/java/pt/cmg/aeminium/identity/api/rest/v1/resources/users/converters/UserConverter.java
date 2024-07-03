@@ -6,9 +6,9 @@ package pt.cmg.aeminium.identity.api.rest.v1.resources.users.converters;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.management.relation.Role;
+import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.response.UserDTO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 
 /**
  * @author Carlos Gonçalves

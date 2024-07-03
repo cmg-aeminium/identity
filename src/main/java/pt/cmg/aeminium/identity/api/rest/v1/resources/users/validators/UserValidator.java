@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import javax.management.relation.Role;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
+import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
+import pt.cmg.aeminium.datamodel.users.entities.identity.User;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestContextData;
+import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestData;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.IdentityApplication;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
-import pt.cmg.aeminium.knowledge.api.rest.KnowledgeApplication;
-import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestContextData;
-import pt.cmg.aeminium.knowledge.api.rest.filters.request.RequestData;
-import pt.cmg.aeminium.knowledge.dao.identity.UserDAO;
-import pt.cmg.aeminium.knowledge.persistence.entities.identity.User;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 
 /**
@@ -42,7 +42,7 @@ public class UserValidator {
     public Optional<List<ErrorDTO>> isValidUserForCreation(CreateUserDTO userDTO) {
         List<ErrorDTO> errors = new ArrayList<>();
 
-        if (!KnowledgeApplication.isAcceptablePassword(userDTO.password, false)) {
+        if (!IdentityApplication.isAcceptablePassword(userDTO.password, false)) {
             errors.add(new ErrorDTO(1, "Password does not comply to acceptable standards"));
         }
 

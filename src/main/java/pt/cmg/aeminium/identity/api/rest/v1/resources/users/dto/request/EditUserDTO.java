@@ -4,7 +4,7 @@
  */
 package pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request;
 
-import pt.cmg.aeminium.knowledge.persistence.entities.localisation.Language;
+import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
 
 /**
  * @author Carlos Gonçalves
