@@ -110,7 +110,6 @@
         <enforcer-plugin-version>3.5.0</enforcer-plugin-version>
         <failsafe-plugin-version>3.3.0</failsafe-plugin-version>
         <install-plugin-version>3.1.2</install-plugin-version>
-        <jar-plugin-version>3.4.1</jar-plugin-version>
         <resources-plugin-version>3.3.1</resources-plugin-version>
         <rewrite-plugin-version>5.34.1</rewrite-plugin-version>
         <rewrite-java-version>2.18.1</rewrite-java-version>
