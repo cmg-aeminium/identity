@@ -47,9 +47,6 @@ public class UserResource {
     @Inject
     private UserValidator userValidator;
 
-    @Inject
-    private UserConverter userConverter;
-
     @GET
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -59,7 +56,7 @@ public class UserResource {
 
         User user = userDAO.findById(id);
 
-        return Response.ok(userConverter.toUserDTO(user)).build();
+        return Response.ok(UserConverter.toUserDTO(user)).build();
     }
 
     @POST
@@ -73,7 +70,7 @@ public class UserResource {
         }
 
         User newUser = userCreator.creatUser(userDTO);
-        return Response.ok(userConverter.toUserDTO(newUser)).build();
+        return Response.ok(UserConverter.toUserDTO(newUser)).build();
     }
 
     @PUT
@@ -89,7 +86,7 @@ public class UserResource {
         }
 
         User newUser = userCreator.editUser(userId, userDTO);
-        return Response.ok(userConverter.toUserDTO(newUser)).build();
+        return Response.ok(UserConverter.toUserDTO(newUser)).build();
     }
 
     @PUT
@@ -103,7 +100,7 @@ public class UserResource {
         }
 
         User newUser = userCreator.editUserRoles(userId, roles);
-        return Response.ok(userConverter.toUserDTO(newUser)).build();
+        return Response.ok(UserConverter.toUserDTO(newUser)).build();
     }
 
 }
