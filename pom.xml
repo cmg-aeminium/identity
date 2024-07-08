@@ -5,7 +5,7 @@
 
     <groupId>pt.cmg.aeminium</groupId>
     <artifactId>identity</artifactId>
-    <version>1.0</version>
+    <version>1.0.0</version>
 
     <name>identity</name>
     <packaging>war</packaging>
@@ -300,7 +300,7 @@
                             <systemProperties>
                                 <property>
                                     <name>payaramicro.port</name>
-                                    <value>50001</value>
+                                    <value>50000</value>
                                 </property>
                                 <!--property>
 					                <name>payaramicro.rootDir</name>

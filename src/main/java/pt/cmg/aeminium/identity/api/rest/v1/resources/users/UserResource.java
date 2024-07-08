@@ -7,7 +7,7 @@ package pt.cmg.aeminium.identity.api.rest.v1.resources.users;
 import java.util.List;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -33,9 +33,8 @@ import pt.cmg.jakartautils.errors.ErrorDTO;
 /**
  * @author Carlos Gonçalves
  */
-@RequestScoped
+@Stateless
 @Path("users")
-@RolesAllowed("GOD")
 public class UserResource {
 
     @Inject
@@ -51,7 +50,7 @@ public class UserResource {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
+    @RolesAllowed({"GOD", "SCHOLAR"})
     public Response getUser(@PathParam("id") Long id) {
 
         User user = userDAO.findById(id);
