@@ -15,7 +15,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.HttpHeaders;
 import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
-import pt.cmg.aeminium.identity.api.rest.v1.resources.IdentityApplication;
+import pt.cmg.aeminium.identity.api.rest.v1.IdentityApplication;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 import pt.cmg.jakartautils.identity.PasswordUtils;

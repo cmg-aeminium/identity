@@ -9,7 +9,7 @@ import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
-import pt.cmg.aeminium.identity.api.rest.v1.resources.IdentityApplication;
+import pt.cmg.aeminium.identity.api.rest.v1.IdentityApplication;
 
 /**
  * @author Carlos Gonçalves

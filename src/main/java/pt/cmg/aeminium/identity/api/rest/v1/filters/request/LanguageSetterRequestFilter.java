@@ -10,7 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
-import pt.cmg.aeminium.identity.api.rest.v1.resources.IdentityApplication;
+import pt.cmg.aeminium.identity.api.rest.v1.IdentityApplication;
 
 /**
  * This is a global filter that checks every HTTP request for a language and if it is not sent
