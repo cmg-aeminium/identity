@@ -7,7 +7,7 @@
     <artifactId>identity</artifactId>
     <version>1.0.0</version>
 
-    <name>identity</name>
+    <name>aem-identity</name>
     <packaging>war</packaging>
 
     <developers>
@@ -87,9 +87,6 @@
         <!--  General properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- Application properties -->
-        <final.name>${project.artifactId}</final.name>
-
         <!--JAVA version -->
         <java-version>21</java-version>
 
@@ -101,12 +98,11 @@
 
         <!-- Maven plugin versions -->
         <maven-required-version>3.9.7</maven-required-version>
-        
-        <ejb-plugin-version>3.0.1</ejb-plugin-version>
-        
+
         <antrun-plugin-version>3.1.0</antrun-plugin-version>
         <clean-plugin-version>3.3.2</clean-plugin-version>
         <compiler-plugin-version>3.13.0</compiler-plugin-version>
+        <dependency-plugin-version>3.7.1</dependency-plugin-version>
         <enforcer-plugin-version>3.5.0</enforcer-plugin-version>
         <failsafe-plugin-version>3.3.0</failsafe-plugin-version>
         <install-plugin-version>3.1.2</install-plugin-version>
@@ -117,13 +113,13 @@
         <surefire-reporting-plugin-version>3.0.0-M4</surefire-reporting-plugin-version>
         <versions-plugin-version>2.16.2</versions-plugin-version>
         <war-plugin-version>3.4.0</war-plugin-version>
-        
+
         <!-- Library versions -->
         <commons-lang3-version>3.14.0</commons-lang3-version>
         <commons-validator-version>1.9.0</commons-validator-version>
         <jjwt-version>0.12.6</jjwt-version>
         <postresql-version>42.7.3</postresql-version>
-        
+
         <!-- First party dependencies -->
         <aem-jakarta-utils-version>3.0.0</aem-jakarta-utils-version>
         <aem-datamodel-common-version>1.0.0</aem-datamodel-common-version>
@@ -132,6 +128,8 @@
     </properties>
 
     <build>
+
+        <finalName>${project.name}</finalName>
 
         <pluginManagement>
             <plugins>
@@ -176,7 +174,7 @@
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                         <attachClasses>true</attachClasses>
                         <classesClassifier>classes</classesClassifier>
-                        
+
                         <!-- This way I can refer the JPA jars without changing their version on persistence.xml -->
                         <outputFileNameMapping>@{artifactId}@.@{extension}@</outputFileNameMapping>
 
@@ -185,12 +183,6 @@
                         </archive>
 
                     </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${jar-plugin-version}</version>
                 </plugin>
 
                 <!-- Surefire plugin used for testing -->
@@ -250,6 +242,12 @@
                     </configuration>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${dependency-plugin-version}</version>
+                </plugin>
+
             </plugins>
         </pluginManagement>
 
@@ -269,10 +267,11 @@
                             <rules>
                                 <requireMavenVersion>
                                     <version>${maven-required-version}</version>
+                                    <message>Minimum Maven required version is ${maven-required-version}</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>${java-version}</version>
-                                    <message>Minimum JDK supported version is ${java-version}</message>
+                                    <message>Minimum JDK required version is ${java-version}</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -300,7 +299,7 @@
                             <systemProperties>
                                 <property>
                                     <name>payaramicro.port</name>
-                                    <value>50000</value>
+                                    <value>50001</value>
                                 </property>
                                 <!--property>
 					                <name>payaramicro.rootDir</name>
@@ -352,7 +351,7 @@
                                 </property>
                                 <property>
                                     <name>hazelcast.memberName</name>
-                                    <value>${final.name}</value>
+                                    <value>${project.name}</value>
                                 </property>
                             </systemProperties>
 
@@ -441,7 +440,7 @@
     </dependencyManagement>
 
     <dependencies>
-    
+
         <!-- Platform -->
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -454,21 +453,11 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Implementation specific - bundled with runtime -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.weld</groupId>
-            <artifactId>weld-osgi-bundle</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -477,12 +466,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postresql-version}</version>
-        </dependency>
-
+        <!-- 1st party dependencies -->
         <dependency>
             <groupId>pt.cmg</groupId>
             <artifactId>jakartautils</artifactId>
@@ -497,6 +481,14 @@
             <groupId>pt.cmg.aeminium</groupId>
             <artifactId>datamodel-users</artifactId>
             <version>${aem-datamodel-users-version}</version>
+        </dependency>
+
+
+        <!-- Special: database driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postresql-version}</version>
         </dependency>
 
         <!-- Third-party -->

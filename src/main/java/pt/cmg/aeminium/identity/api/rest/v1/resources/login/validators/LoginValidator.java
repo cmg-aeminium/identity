@@ -15,8 +15,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.HttpHeaders;
 import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
-import pt.cmg.aeminium.identity.api.rest.v1.IdentityApplication;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
+import pt.cmg.aeminium.identity.tasks.users.PasswordConstrainer;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 import pt.cmg.jakartautils.identity.PasswordUtils;
 import pt.cmg.jakartautils.text.TextFormatter;
@@ -26,6 +26,10 @@ import pt.cmg.jakartautils.text.TextFormatter;
  */
 @RequestScoped
 public class LoginValidator {
+
+    // The maximum email length is 254, by the specification RFC 5321 (see http://www.dominicsayers.com/isemail/).
+    // This is, however a source of a heated discussion, so bear that in mind should this blow in the future
+    public static final int EMAIL_MAX_LENGTH = 254;
 
     private static final Logger LOGGER = Logger.getLogger(LoginValidator.class.getName());
 
@@ -79,7 +83,7 @@ public class LoginValidator {
             return Optional.of(List.of(new ErrorDTO(2, "Missing parameter: password")));
         }
 
-        if (!isEmailValid(crendentials[0]) || !IdentityApplication.isAcceptablePassword(crendentials[1], false)) {
+        if (!isEmailValid(crendentials[0]) || !PasswordConstrainer.isAcceptablePassword(crendentials[1], false)) {
             return Optional.of(List.of(new ErrorDTO(3, "Invalid login credentials")));
         }
 
@@ -88,7 +92,7 @@ public class LoginValidator {
 
     private boolean isEmailValid(String email) {
 
-        if (StringUtils.isBlank(email) || email.length() > IdentityApplication.EMAIL_MAX_LENGTH) {
+        if (StringUtils.isBlank(email) || email.length() > EMAIL_MAX_LENGTH) {
             return false;
         }
 

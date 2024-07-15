@@ -15,11 +15,11 @@ import jakarta.inject.Inject;
 import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
 import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
-import pt.cmg.aeminium.identity.api.rest.v1.IdentityApplication;
 import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestContextData;
 import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestData;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
+import pt.cmg.aeminium.identity.tasks.users.PasswordConstrainer;
 import pt.cmg.jakartautils.errors.ErrorDTO;
 
 /**
@@ -42,7 +42,7 @@ public class UserValidator {
     public Optional<List<ErrorDTO>> isValidUserForCreation(CreateUserDTO userDTO) {
         List<ErrorDTO> errors = new ArrayList<>();
 
-        if (!IdentityApplication.isAcceptablePassword(userDTO.password, false)) {
+        if (!PasswordConstrainer.isAcceptablePassword(userDTO.password, false)) {
             errors.add(new ErrorDTO(1, "Password does not comply to acceptable standards"));
         }
 
