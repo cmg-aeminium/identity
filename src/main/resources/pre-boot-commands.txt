@@ -1,5 +1,8 @@
+# Always neat to have JVM options being print at boot
+generate-jvm-report
+
 # This will disable auto-naming. It is easier to understand what is going on if the hazelcast cluster name means something
 set hazelcast-runtime-configuration.generate-names=false
 
 # Naming will be the same as the application. The port will auto-increment by default so even if we have multiple instances there is no collision
-set configs.config.server-config.hazelcast-config-specific-configuration.member-name=${hazelcast.memberName}
+set configs.config.server-config.hazelcast-config-specific-configuration.member-name=aem-identity

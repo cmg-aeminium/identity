@@ -33,7 +33,7 @@ public class JWTokenCreator {
     private static final Logger LOGGER = Logger.getLogger(JWTokenCreator.class.getName());
 
     @Inject
-    @ConfigProperty(name = "jwt.privatekey.location", defaultValue = "src/main/resources/aeminium_pkey.pem")
+    @ConfigProperty(name = "jwt.privatekey.location", defaultValue = "/WEB-INF/classes/aeminium_pkey.pem")
     private String privateKeyLocation;
 
     private String privateKeyBase64;
@@ -44,22 +44,32 @@ public class JWTokenCreator {
     public void loadPrivateKey() {
 
         StringBuilder builder = new StringBuilder();
+
+        LOGGER.info("Location: " + privateKeyLocation);
+
         try (BufferedReader reader = new BufferedReader(new FileReader(privateKeyLocation))) {
 
             String line;
 
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith("-----") && !line.endsWith("-----")) {
+                    LOGGER.info("Line: " + line);
                     builder.append(line);
                 }
             }
 
         } catch (IOException e) {
-
+            LOGGER.info(e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
         privateKeyBase64 = builder.toString();
+
+        LOGGER.info("Private Key: " + privateKeyBase64);
+
         privateKey = generatePrivateKey(privateKeyBase64);
+
+        LOGGER.info("Format: " + privateKey.getFormat());
 
     }
 

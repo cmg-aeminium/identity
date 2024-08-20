@@ -91,7 +91,7 @@
         <java-version>21</java-version>
 
         <!-- Payara Version -->
-        <payara-version>6.2024.6</payara-version>
+        <payara-version>6.2024.7</payara-version>
         <payara-micro-plugin-version>2.3</payara-micro-plugin-version>
 
         <domain.dir>${user.home}/modules/identity/domain</domain.dir>
@@ -231,6 +231,8 @@
                     <artifactId>payara-micro-maven-plugin</artifactId>
                     <version>${payara-micro-plugin-version}</version>
                     <configuration>
+                        <payaraVersion>${payara-version}</payaraVersion>
+
                         <javaCommandLineOptions>
                             <option>
                                 <value>-Xms1G</value>
@@ -239,6 +241,23 @@
                                 <value>-Xmx1G</value>
                             </option>
                         </javaCommandLineOptions>
+
+                        <commandLineOptions>
+                            <option>
+                                <key>--port</key>
+                                <value>50001</value>
+                            </option>
+                            <option>
+                                <key>--minHttpThreads</key>
+                                <value>10</value>
+                            </option>
+                            <option>
+                                <key>--maxHttpThreads</key>
+                                <value>10</value>
+                            </option>
+                        </commandLineOptions>
+
+                        <useUberJar>true</useUberJar>
                     </configuration>
                 </plugin>
 
@@ -293,67 +312,10 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <payaraVersion>${payara-version}</payaraVersion>
+                        
                             <!-- Uncomment below to name the context root path from ROOT to whatever I want -->
                             <!--autoDeployContextRoot>${project.artifactId}</autoDeployContextRoot-->
-                            <systemProperties>
-                                <property>
-                                    <name>payaramicro.port</name>
-                                    <value>50001</value>
-                                </property>
-                                <!--property>
-					                <name>payaramicro.rootDir</name>
-					                <value>${domain.dir}</value>
-					            </property-->
-                                <property>
-                                    <name>database.user</name>
-                                    <value>postgres</value>
-                                </property>
-                                <property>
-                                    <name>database.password</name>
-                                    <value>admin</value>
-                                </property>
-                                <property>
-                                    <name>database.host</name>
-                                    <value>localhost</value>
-                                </property>
-                                <property>
-                                    <name>database.name</name>
-                                    <value>aeminium</value>
-                                </property>
-                                <property>
-                                    <name>database.port</name>
-                                    <value>5432</value>
-                                </property>
-                                <property>
-                                    <name>database.minpoolsize</name>
-                                    <value>1</value>
-                                </property>
-                                <property>
-                                    <name>database.maxpoolsize</name>
-                                    <value>10</value>
-                                </property>
-                                <property>
-                                    <name>datasource.javaclass</name>
-                                    <value>org.postgresql.ds.PGPoolingDataSource</value>
-                                </property>
-                                <property>
-                                    <name>jpa.cache.loadAtStartup</name>
-                                    <value>true</value>
-                                </property>
-                                <property>
-                                    <name>payaramicro.minHttpThreads</name>
-                                    <value>10</value>
-                                </property>
-                                <property>
-                                    <name>payaramicro.maxHttpThreads</name>
-                                    <value>10</value>
-                                </property>
-                                <property>
-                                    <name>hazelcast.memberName</name>
-                                    <value>${project.name}</value>
-                                </property>
-                            </systemProperties>
+                            <systemProperties></systemProperties>
 
                             <!-- If I need to use hazelcast SQL querying -->
                             <!--customJars>
@@ -365,6 +327,7 @@
                             </customJars-->
 
                             <appendSystemProperties>true</appendSystemProperties>
+
                         </configuration>
                     </execution>
                 </executions>

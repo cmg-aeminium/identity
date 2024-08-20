@@ -1,0 +1,10 @@
+Dockerfile
+
+.dockerignore
+
+.git
+.classpath
+.gitignore
+.project
+
+/target/*[!*-microbundle.jar]

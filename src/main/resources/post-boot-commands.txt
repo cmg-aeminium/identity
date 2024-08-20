@@ -2,6 +2,10 @@
 delete-jdbc-resource jdbc/aem-identity-data
 delete-jdbc-connection-pool identityPool
 
-create-jdbc-connection-pool --datasourceclassname org.postgresql.ds.PGPoolingDataSource --restype javax.sql.DataSource --validationmethod=auto-commit --steadypoolsize=${database.minpoolsize} --maxpoolsize=${database.maxpoolsize} --wrapjdbcobjects=true --property "User=${database.user}:Password=${database.password}:Url='jdbc:postgresql://${database.host}:${database.port}/${database.name}':stringtype=unspecified:reWriteBatchedInserts=true" identityPool
+create-jdbc-connection-pool --datasourceclassname=org.postgresql.ds.PGPoolingDataSource --restype javax.sql.DataSource --validationmethod=auto-commit  --wrapjdbcobjects=true --property "User=${MPCONFIG=database.user}:Password=${MPCONFIG=database.password}:Url='jdbc:postgresql://${MPCONFIG=database.host}:${MPCONFIG=database.port}/${MPCONFIG=database.name}':stringtype=unspecified:reWriteBatchedInserts=true" identityPool
+
+# Written here instead of above for readability
+set resources.jdbc-connection-pool.identityPool.steady-pool-size=${MPCONFIG=database.minpoolsize:10}
+set resources.jdbc-connection-pool.identityPool.max-pool-size=${MPCONFIG=database.maxpoolsize:10}
 
 create-jdbc-resource --connectionpoolid identityPool jdbc/aem-identity-data
