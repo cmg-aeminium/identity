@@ -18,23 +18,14 @@ ENV PATH=${JAVA_HOME}/bin:${PATH}
 
 # Copy project files
 ADD target/aem-identity-microbundle.jar /usr/local/app
-ADD src/main/resources/aeminium_pkey.pem /usr/local/app
 
+# Note that WORKDIR is passed to Java programs as the value for the user.dir system property, which is important for relative path resolution
 WORKDIR /usr/local/app
 
-# These ENV variables are meant to affect the application itself
-ENV payaramicro_minHttpThreads=10 \
-    payaramicro_maxHttpThreads=10 \
-    JVM_OPTIONS=\
-    JWT_PRIVATEKEY_LOCATION=\
-    DATABASE_USER=\
-    DATABASE_PASSWORD=\
-    DATABASE_HOST=\
-    DATABASE_NAME=\
-    DATABASE_PORT=\
-    JPA_CACHE_LOADATSTARTUP=
-    
+# JVM_OPTIONS can be used to add specific behaviour to the JVM
+ENV JVM_OPTIONS="-Xms1G -Xmx1G"
 
+# Hazelcast: 6900 , HTTP Port: 8080
 EXPOSE 6900 8080   
 
 ENTRYPOINT java ${JVM_OPTIONS} -jar aem-identity-microbundle.jar

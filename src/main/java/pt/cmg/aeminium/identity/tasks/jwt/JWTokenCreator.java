@@ -4,9 +4,13 @@
  */
 package pt.cmg.aeminium.identity.tasks.jwt;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import static java.lang.Thread.currentThread;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -19,7 +23,6 @@ import java.util.Date;
 import java.util.logging.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import io.jsonwebtoken.Jwts;
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
@@ -33,44 +36,51 @@ public class JWTokenCreator {
     private static final Logger LOGGER = Logger.getLogger(JWTokenCreator.class.getName());
 
     @Inject
-    @ConfigProperty(name = "jwt.privatekey.location", defaultValue = "/WEB-INF/classes/aeminium_pkey.pem")
+    @ConfigProperty(name = "jwt.privatekey.location", defaultValue = "/META-INF/aeminium_pkey.pem")
     private String privateKeyLocation;
 
     private String privateKeyBase64;
 
     private PrivateKey privateKey;
 
-    @PostConstruct
+    // @PostConstruct
     public void loadPrivateKey() {
+        privateKeyBase64 = readKeyFile();
+        privateKey = generatePrivateKey(privateKeyBase64);
+    }
 
-        StringBuilder builder = new StringBuilder();
+    public String readKeyFile() {
 
-        LOGGER.info("Location: " + privateKeyLocation);
+        LOGGER.info("Working Directory = " + System.getProperty("user.dir"));
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(privateKeyLocation))) {
+        String keyString = null;
 
-            String line;
+        try {
 
-            while ((line = reader.readLine()) != null) {
-                if (!line.startsWith("-----") && !line.endsWith("-----")) {
-                    LOGGER.info("Line: " + line);
-                    builder.append(line);
-                }
+            // First we look for the key in the resources. This happens only for the default development key which is packaged in the .war
+            URL resourcesKeyURL = currentThread().getContextClassLoader().getResource(privateKeyLocation);
+
+            Path filePath;
+            if (resourcesKeyURL == null) {
+                // If it's not on resources, then it must be an outer file.
+                // Always remember that this file is relative to the working directory
+                filePath = Paths.get(privateKeyLocation).toAbsolutePath();
+            } else {
+                filePath = Paths.get(resourcesKeyURL.toURI());
             }
 
+            keyString = Files.lines(filePath)
+                .filter(line -> !line.startsWith("-----") && !line.endsWith("-----"))
+                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+                .toString();
+
         } catch (IOException e) {
-            LOGGER.info(e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        privateKeyBase64 = builder.toString();
-
-        LOGGER.info("Private Key: " + privateKeyBase64);
-
-        privateKey = generatePrivateKey(privateKeyBase64);
-
-        LOGGER.info("Format: " + privateKey.getFormat());
-
+        return keyString;
     }
 
     private PrivateKey generatePrivateKey(String pemKey) {
