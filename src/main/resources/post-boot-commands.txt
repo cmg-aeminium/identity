@@ -9,3 +9,5 @@ set resources.jdbc-connection-pool.identityPool.steady-pool-size=${MPCONFIG=data
 set resources.jdbc-connection-pool.identityPool.max-pool-size=${MPCONFIG=database.maxpoolsize:10}
 
 create-jdbc-resource --connectionpoolid identityPool jdbc/aem-identity-data
+
+get-hazelcast-configuration

@@ -23,7 +23,7 @@ ADD target/aem-identity-microbundle.jar /usr/local/app
 WORKDIR /usr/local/app
 
 # JVM_OPTIONS can be used to add specific behaviour to the JVM
-ENV JVM_OPTIONS="-Xms1G -Xmx1G"
+ENV JVM_OPTIONS="-Xms128m -Xmx256m"
 
 # Hazelcast: 6900 , HTTP Port: 8080
 EXPOSE 6900 8080   

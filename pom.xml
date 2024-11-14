@@ -235,10 +235,10 @@
 
                         <javaCommandLineOptions>
                             <option>
-                                <value>-Xms1G</value>
+                                <value>-Xms128m</value>
                             </option>
                             <option>
-                                <value>-Xmx1G</value>
+                                <value>-Xmx128m</value>
                             </option>
                         </javaCommandLineOptions>
 
@@ -314,8 +314,7 @@
                         <configuration>
                         
                             <!-- Uncomment below to name the context root path from ROOT to whatever I want -->
-                            <!--autoDeployContextRoot>${project.artifactId}</autoDeployContextRoot-->
-                            <systemProperties></systemProperties>
+                            <autoDeployContextRoot>${project.artifactId}</autoDeployContextRoot>
 
                             <!-- If I need to use hazelcast SQL querying -->
                             <!--customJars>

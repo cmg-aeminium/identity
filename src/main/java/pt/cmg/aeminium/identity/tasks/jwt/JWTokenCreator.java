@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import io.jsonwebtoken.Jwts;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
@@ -43,15 +44,13 @@ public class JWTokenCreator {
 
     private PrivateKey privateKey;
 
-    // @PostConstruct
+    @PostConstruct
     public void loadPrivateKey() {
         privateKeyBase64 = readKeyFile();
         privateKey = generatePrivateKey(privateKeyBase64);
     }
 
     public String readKeyFile() {
-
-        LOGGER.info("Working Directory = " + System.getProperty("user.dir"));
 
         String keyString = null;
 
