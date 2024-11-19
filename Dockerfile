@@ -19,6 +19,8 @@ ENV PATH=${JAVA_HOME}/bin:${PATH}
 # Copy project files
 ADD target/aem-identity-microbundle.jar /usr/local/app
 
+ADD ../infra/hazelcast/hazelcast-config-aws.xml /usr/local/app
+
 # Note that WORKDIR is passed to Java programs as the value for the user.dir system property, which is important for relative path resolution
 WORKDIR /usr/local/app
 
@@ -28,4 +30,4 @@ ENV JVM_OPTIONS="-Xms128m -Xmx256m"
 # Hazelcast: 6900 , HTTP Port: 8080
 EXPOSE 6900 8080   
 
-ENTRYPOINT java ${JVM_OPTIONS} -jar aem-identity-microbundle.jar
+ENTRYPOINT java ${JVM_OPTIONS} -jar aem-identity-microbundle.jar --hzconfigfile  hazelcast-config-aws.xml
