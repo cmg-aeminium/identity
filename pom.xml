@@ -312,7 +312,7 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                        
+
                             <!-- Uncomment below to name the context root path from ROOT to whatever I want -->
                             <autoDeployContextRoot>${project.artifactId}</autoDeployContextRoot>
 
@@ -425,6 +425,11 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>fish.payara.api</groupId>
+            <artifactId>payara-api</artifactId>
             <scope>provided</scope>
         </dependency>
 

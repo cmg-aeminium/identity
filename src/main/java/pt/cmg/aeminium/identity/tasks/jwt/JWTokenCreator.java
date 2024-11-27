@@ -20,7 +20,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
-import java.util.logging.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
@@ -33,8 +32,6 @@ import pt.cmg.aeminium.datamodel.users.entities.identity.User;
  */
 @Singleton
 public class JWTokenCreator {
-
-    private static final Logger LOGGER = Logger.getLogger(JWTokenCreator.class.getName());
 
     @Inject
     @ConfigProperty(name = "jwt.privatekey.location", defaultValue = "/META-INF/aeminium_pkey.pem")
