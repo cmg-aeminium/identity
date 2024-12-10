@@ -11,8 +11,10 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -23,11 +25,13 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO;
+import pt.cmg.aeminium.datamodel.users.dao.identity.UserDAO.UserFilter;
 import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.converters.UserConverter;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.SearchUsersFilterDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.validators.UserValidator;
 import pt.cmg.aeminium.identity.tasks.users.UserCreator;
 import pt.cmg.jakartautils.errors.ErrorDTO;
@@ -60,6 +64,18 @@ public class UserResource {
         User user = userDAO.findById(id);
 
         return Response.ok(UserConverter.toUserDTO(user)).build();
+    }
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"GOD", "SCHOLAR"})
+    @Transactional(value = TxType.SUPPORTS)
+    public Response getUsers(@Valid @BeanParam SearchUsersFilterDTO filter) {
+
+        List<User> users = userDAO.findByFiltered(new UserFilter(filter.status, filter.roles, filter.email, filter.size, filter.offset));
+
+        return Response.ok(UserConverter.toUsersDTO(users)).build();
     }
 
     @POST

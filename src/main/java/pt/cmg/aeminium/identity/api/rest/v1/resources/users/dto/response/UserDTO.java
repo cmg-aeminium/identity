@@ -15,17 +15,15 @@ import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 /**
  * @author Carlos Gonçalves
  */
-@JsonbPropertyOrder({"id", "name", "email", "language", "status", "createdAt", "roles"})
-public class UserDTO implements Comparable<UserDTO> {
-
-    public Long id;
-    public String name;
-    public String email;
-    public Language language;
-    public User.Status status;
-    public LocalDateTime createdAt;
-
-    public List<String> roles;
+@JsonbPropertyOrder({"id", "name", "email", "status", "createdAt", "language", "roles"})
+public record UserDTO(
+    Long id,
+    String name,
+    String email,
+    Language language,
+    User.Status status,
+    LocalDateTime createdAt,
+    List<String> roles) implements Comparable<UserDTO> {
 
     @Override
     public int compareTo(UserDTO o) {
@@ -35,4 +33,5 @@ public class UserDTO implements Comparable<UserDTO> {
 
         return comparator.compare(name, o.name);
     }
+
 }

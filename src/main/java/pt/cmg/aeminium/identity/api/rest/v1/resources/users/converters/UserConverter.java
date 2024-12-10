@@ -4,8 +4,8 @@
  */
 package pt.cmg.aeminium.identity.api.rest.v1.resources.users.converters;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import pt.cmg.aeminium.datamodel.users.entities.identity.Role;
 import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.response.UserDTO;
@@ -16,20 +16,37 @@ import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.response.UserDTO
 public class UserConverter {
 
     public static UserDTO toUserDTO(User user) {
+        return new UserDTO(user.getId(),
+            user.getName(),
+            user.getEmail(),
+            user.getLanguage(),
+            user.getStatus(),
+            user.getCreatedAt(),
+            user.getRoles().stream().map(rl -> rl.getName().toString()).toList());
 
-        UserDTO dto = new UserDTO();
-        dto.id = user.getId();
-        dto.name = user.getName();
-        dto.email = user.getEmail();
-        dto.status = user.getStatus();
-        dto.language = user.getLanguage();
+    }
 
-        List<Role> roles = user.getRoles();
-        dto.roles = roles.stream().map(rl -> rl.getName().toString()).collect(Collectors.toList());
+    public static List<UserDTO> toUsersDTO(List<User> users) {
 
-        dto.createdAt = user.getCreatedAt();
+        List<UserDTO> usersDTO = new ArrayList<>();
 
-        return dto;
+        for (User user : users) {
+
+            List<Role> roles = user.getRoles();
+
+            UserDTO dto = new UserDTO(user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getLanguage(),
+                user.getStatus(),
+                user.getCreatedAt(),
+                roles.stream().map(rl -> rl.getName().toString()).toList());
+
+            usersDTO.add(dto);
+
+        }
+
+        return usersDTO;
 
     }
 }
