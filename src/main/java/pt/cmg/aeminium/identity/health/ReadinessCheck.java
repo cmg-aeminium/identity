@@ -8,6 +8,8 @@ import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.Readiness;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import pt.cmg.aeminium.identity.cache.ObjectCacheLoader;
 
 /**
  * @author Carlos Gonçalves
@@ -16,9 +18,15 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ReadinessCheck implements HealthCheck {
 
+    @Inject
+    private ObjectCacheLoader objectCache;
+
     @Override
     public HealthCheckResponse call() {
-        return HealthCheckResponse.up("identity");
+        if (objectCache.isCacheReady()) {
+            return HealthCheckResponse.up("identity");
+        }
+        return HealthCheckResponse.down("identity");
     }
 
 }

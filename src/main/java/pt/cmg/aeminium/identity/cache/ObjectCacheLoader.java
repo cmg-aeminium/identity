@@ -56,9 +56,14 @@ public class ObjectCacheLoader {
     @Inject
     private TextTranslationCache hazelcastCache;
 
+    private boolean isCacheReady = false;
+
+    public boolean isCacheReady() {
+        return isCacheReady;
+    }
+
     @PostConstruct
     public void loadCacheAtStartup() {
-
         if (loadCacheAtStartup) {
             LOGGER.info("Loading Cache at startup is active. Loading objects and query results to memory.");
             loadObjectCache();
@@ -66,6 +71,7 @@ public class ObjectCacheLoader {
             LOGGER.warning("No objects/queries will be loaded at startup, but cache will still be available whenever objects are loaded from database.");
         }
 
+        isCacheReady = true;
     }
 
     /**
@@ -79,8 +85,13 @@ public class ObjectCacheLoader {
 
     @Asynchronous
     public void refreshCache() {
+
+        isCacheReady = false;
+
         invalidateAllCaches();
         loadObjectCache();
+
+        isCacheReady = true;
     }
 
     /**
@@ -91,6 +102,8 @@ public class ObjectCacheLoader {
      */
     public void invalidateAllCaches() {
 
+        isCacheReady = false;
+
         Cache appCache = entityManagerFactory.getCache();
         appCache.evictAll();
 
@@ -98,6 +111,7 @@ public class ObjectCacheLoader {
             cache.clearQueryCache();
         }
 
+        isCacheReady = true;
     }
 
     /**

@@ -6,7 +6,6 @@ package pt.cmg.aeminium.identity.cache;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
-import java.util.logging.Logger;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,8 +20,6 @@ import pt.cmg.aeminium.identity.api.rest.v1.filters.request.RequestData;
  */
 @ApplicationScoped
 public class TextTranslationCache {
-
-    private static final Logger LOGGER = Logger.getLogger(TextTranslationCache.class.getName());
 
     private static final String DEFAULT_LANG_MAP_NAME = "translations";
 
