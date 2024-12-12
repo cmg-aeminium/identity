@@ -27,6 +27,7 @@ import pt.cmg.aeminium.datamodel.common.entities.localisation.Language;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.TextContent;
 import pt.cmg.aeminium.datamodel.common.entities.localisation.TranslatedText;
 import pt.cmg.jakartautils.jpa.QueryUtils;
+import pt.cmg.jakartautils.text.TextFormatter;
 
 /**
  * @author Carlos Gonçalves
@@ -136,6 +137,8 @@ public class ObjectCacheLoader {
         database.close();
 
         loadTextsToHazelcastCache(ids);
+
+        LOGGER.info(TextFormatter.formatMessage("Loaded {0} Countries objects and text translation to cache", countries.size()));
     }
 
     /**
