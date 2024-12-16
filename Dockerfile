@@ -6,7 +6,7 @@ RUN mkdir -p /usr/local/java /usr/local/app/
 
 # Download OpenJDK
 WORKDIR /usr/local
-RUN wget -qO temurin_jdk21_linux_x64_bin.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.4+7/OpenJDK21U-jdk_x64_alpine-linux_hotspot_21.0.4_7.tar.gz \
+RUN wget -qO temurin_jdk21_linux_x64_bin.tar.gz https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.5+11/OpenJDK21U-jdk_x64_alpine-linux_hotspot_21.0.5_11.tar.gz \
     && tar -xvf temurin_jdk21_linux_x64_bin.tar.gz -C /usr/local/java --strip-components=1 \
     && rm -rf temurin_jdk21_linux_x64_bin.tar.gz
 

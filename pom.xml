@@ -5,7 +5,7 @@
 
     <groupId>pt.cmg.aeminium</groupId>
     <artifactId>identity</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>aem-identity</name>
     <packaging>war</packaging>
@@ -91,7 +91,7 @@
         <java-version>21</java-version>
 
         <!-- Payara Version -->
-        <payara-version>6.2024.7</payara-version>
+        <payara-version>6.2024.11</payara-version>
         <payara-micro-plugin-version>2.3</payara-micro-plugin-version>
 
         <domain.dir>${user.home}/modules/identity/domain</domain.dir>
@@ -115,15 +115,15 @@
         <war-plugin-version>3.4.0</war-plugin-version>
 
         <!-- Library versions -->
-        <commons-lang3-version>3.14.0</commons-lang3-version>
+        <commons-lang3-version>3.17.0</commons-lang3-version>
         <commons-validator-version>1.9.0</commons-validator-version>
         <jjwt-version>0.12.6</jjwt-version>
-        <postresql-version>42.7.3</postresql-version>
+        <postresql-version>42.7.4</postresql-version>
 
         <!-- First party dependencies -->
-        <aem-jakarta-utils-version>3.0.0</aem-jakarta-utils-version>
-        <aem-datamodel-common-version>1.0.0</aem-datamodel-common-version>
-        <aem-datamodel-users-version>1.0.0</aem-datamodel-users-version>
+        <aem-jakarta-utils-version>3.0.1</aem-jakarta-utils-version>
+        <aem-datamodel-common-version>1.0.1</aem-datamodel-common-version>
+        <aem-datamodel-users-version>1.0.1</aem-datamodel-users-version>
 
     </properties>
 
