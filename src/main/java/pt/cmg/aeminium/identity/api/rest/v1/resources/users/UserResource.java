@@ -5,6 +5,11 @@
 package pt.cmg.aeminium.identity.api.rest.v1.resources.users;
 
 import java.util.List;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
@@ -32,9 +37,11 @@ import pt.cmg.aeminium.identity.api.rest.v1.resources.users.converters.UserConve
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.CreateUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.EditUserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.request.SearchUsersFilterDTO;
+import pt.cmg.aeminium.identity.api.rest.v1.resources.users.dto.response.UserDTO;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.users.validators.UserValidator;
 import pt.cmg.aeminium.identity.tasks.users.UserCreator;
 import pt.cmg.jakartautils.errors.ErrorDTO;
+import pt.cmg.jakartautils.text.TextFormatter;
 
 /**
  * @author Carlos Gonçalves
@@ -42,6 +49,7 @@ import pt.cmg.jakartautils.errors.ErrorDTO;
 @RequestScoped
 @Transactional(value = TxType.REQUIRED)
 @Path("users")
+@Tag(name = "User Resource", description = "Endpoints related operations with users")
 public class UserResource {
 
     @Inject
@@ -59,18 +67,46 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"GOD", "SCHOLAR"})
     @Transactional(value = TxType.SUPPORTS)
+    @Operation(
+        summary = "Retrieves a user by the id",
+        description = "Obtains user info for a given identification number",
+        operationId = "GET_user_by_id")
+    @APIResponse(
+        responseCode = "200",
+        description = "User found. Return user data.",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class)))
+    @APIResponse(
+        responseCode = "400",
+        description = "User with id does not exist. Returns Error",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)))
     public Response getUser(@PathParam("id") Long id) {
 
         User user = userDAO.findById(id);
+
+        if (user == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO(1, TextFormatter.formatMessage("User with id {0} not found", id))).build();
+        }
 
         return Response.ok(UserConverter.toUserDTO(user)).build();
     }
 
     @GET
+    @Transactional(value = TxType.SUPPORTS)
+    @RolesAllowed({"GOD", "SCHOLAR"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"GOD", "SCHOLAR"})
-    @Transactional(value = TxType.SUPPORTS)
+    @Operation(
+        summary = "Searches for users",
+        description = "Obtains a paginated list of users given a set of user input filters",
+        operationId = "GET_users_filterd")
+    @APIResponse(
+        responseCode = "200",
+        description = "Returns a user list that matches the search criteria",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserDTO.class)))
+    @APIResponse(
+        responseCode = "400",
+        description = "User with id does not exist. Returns Error",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserDTO[].class)))
     public Response getUsers(@Valid @BeanParam SearchUsersFilterDTO filter) {
 
         List<User> users = userDAO.findByFiltered(new UserFilter(filter.status, filter.roles, filter.email, filter.size, filter.offset));

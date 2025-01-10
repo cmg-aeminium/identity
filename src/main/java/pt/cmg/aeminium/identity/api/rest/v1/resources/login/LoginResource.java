@@ -6,6 +6,11 @@ package pt.cmg.aeminium.identity.api.rest.v1.resources.login;
 
 import java.util.Map;
 import java.util.logging.Logger;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -21,6 +26,7 @@ import pt.cmg.aeminium.datamodel.users.entities.identity.User;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.converters.LoginConverter;
 import pt.cmg.aeminium.identity.api.rest.v1.resources.login.validators.LoginValidator;
 import pt.cmg.aeminium.identity.tasks.jwt.JWTokenCreator;
+import pt.cmg.jakartautils.errors.ErrorDTO;
 import pt.cmg.jakartautils.text.TextFormatter;
 
 /**
@@ -28,6 +34,7 @@ import pt.cmg.jakartautils.text.TextFormatter;
  */
 @RequestScoped
 @Path("login")
+@Tag(name = "Login", description = "These are endpoints related to login")
 public class LoginResource {
 
     private static final Logger LOGGER = Logger.getLogger(LoginResource.class.getName());
@@ -44,6 +51,18 @@ public class LoginResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Performs aeminium login",
+        description = "Provide Basic Authentication credentials and a JWT will be returned, if login credentials are valid",
+        operationId = "login")
+    @APIResponse(
+        responseCode = "200",
+        description = "Valid login credentials. Returns JWT.",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)))
+    @APIResponse(
+        responseCode = "400",
+        description = "Invalid login credentials. Returns Error",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)))
     public Response login(@Context HttpHeaders headers) {
 
         var validationErrors = loginValidator.isValidLogin(headers);
