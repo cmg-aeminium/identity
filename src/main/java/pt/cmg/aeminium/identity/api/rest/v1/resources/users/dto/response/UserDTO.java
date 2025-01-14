@@ -17,7 +17,15 @@ import pt.cmg.aeminium.datamodel.users.entities.identity.User;
  * @author Carlos Gonçalves
  */
 @JsonbPropertyOrder({"id", "name", "email", "status", "createdAt", "language", "roles"})
-@Schema(description = "Represents a User", example = "{\"id\": 1, \"name\": \"Jason D. Frank\", \"email\": \"jdf@mail.com\", \"language\": \"en-UK\", \"status\": \"ACTIVE\"}")
+@Schema(description = "Represents a User", example = """
+    {
+        "id": 1,
+        "name": "Jason D. Frank",
+        "email": "jdf@mail.com",
+        "language": "en-UK",
+        "status": "ACTIVE",
+        "roles" : ["GOD", "SCHOLAR"]}
+    """)
 public record UserDTO(
     Long id,
     String name,

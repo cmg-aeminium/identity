@@ -4,6 +4,7 @@
  */
 package pt.cmg.aeminium.identity.api.rest.v1.resources.ping;
 
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -19,6 +20,7 @@ import pt.cmg.aeminium.identity.communication.cdievents.EventPublisher;
  */
 @RequestScoped
 @Path("ping")
+@Tag(name = "Test", description = "Test operations")
 public class PingResource {
 
     @Inject

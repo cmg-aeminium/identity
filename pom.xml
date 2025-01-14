@@ -121,7 +121,7 @@
         <postresql-version>42.7.4</postresql-version>
 
         <!-- First party dependencies -->
-        <aem-jakarta-utils-version>3.0.1</aem-jakarta-utils-version>
+        <aem-jakarta-utils-version>3.0.2</aem-jakarta-utils-version>
         <aem-datamodel-common-version>1.0.1</aem-datamodel-common-version>
         <aem-datamodel-users-version>1.0.1</aem-datamodel-users-version>
 

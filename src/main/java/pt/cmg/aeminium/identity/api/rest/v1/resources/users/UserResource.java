@@ -6,6 +6,7 @@ package pt.cmg.aeminium.identity.api.rest.v1.resources.users;
 
 import java.util.List;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -49,7 +50,7 @@ import pt.cmg.jakartautils.text.TextFormatter;
 @RequestScoped
 @Transactional(value = TxType.REQUIRED)
 @Path("users")
-@Tag(name = "User Resource", description = "Endpoints related operations with users")
+@Tag(name = "Users", description = "Endpoints related operations with users")
 public class UserResource {
 
     @Inject
@@ -77,7 +78,7 @@ public class UserResource {
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class)))
     @APIResponse(
         responseCode = "400",
-        description = "User with id does not exist. Returns Error",
+        description = "User with id does not exist.  Returns a list of the Errors",
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)))
     public Response getUser(@PathParam("id") Long id) {
 
@@ -102,11 +103,24 @@ public class UserResource {
     @APIResponse(
         responseCode = "200",
         description = "Returns a user list that matches the search criteria",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserDTO.class)))
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(type = SchemaType.ARRAY, ref = "#/components/schemas/UserDTO")))
     @APIResponse(
         responseCode = "400",
-        description = "User with id does not exist. Returns Error",
-        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserDTO[].class)))
+        description = "User with id does not exist.  Returns a list of the Errors",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON,
+            schema = @Schema(type = SchemaType.ARRAY, implementation = ErrorDTO.class),
+            example = """
+                        [
+                            {
+                            "code": 1001,
+                            "description": "Email cannot be null or empty"
+                            },
+                            {
+                            "code": 1002,
+                            "description": "Name cannot be null or empty"
+                            }
+                        ]
+                """))
     public Response getUsers(@Valid @BeanParam SearchUsersFilterDTO filter) {
 
         List<User> users = userDAO.findByFiltered(new UserFilter(filter.status, filter.roles, filter.email, filter.size, filter.offset));
@@ -117,6 +131,18 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Creates a new User",
+        description = "Creates a new User, if authorized to do so.",
+        operationId = "POST_users")
+    @APIResponse(
+        responseCode = "200",
+        description = "Returns the newly created user",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(ref = "#/components/schemas/UserDTO")))
+    @APIResponse(
+        responseCode = "400",
+        description = "A number of input parameters were not fit to create user.  Returns a list of the Errors",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(type = SchemaType.ARRAY, implementation = ErrorDTO.class)))
     public Response createUser(@NotNull CreateUserDTO userDTO) {
 
         var validationErrors = userValidator.isValidUserForCreation(userDTO);
@@ -133,6 +159,18 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
+    @Operation(
+        summary = "Edits a User",
+        description = "Edits the User Details, if authorized to do so",
+        operationId = "PUT_users")
+    @APIResponse(
+        responseCode = "200",
+        description = "Returns the edited user",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(ref = "#/components/schemas/UserDTO")))
+    @APIResponse(
+        responseCode = "400",
+        description = "A number of input parameters were not fit to edit user. Returns a list of the Errors",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(type = SchemaType.ARRAY, implementation = ErrorDTO.class)))
     public Response editUser(@PathParam("id") Long userId, @NotNull EditUserDTO userDTO) {
 
         var validationErrors = userValidator.isValidUserForEdition(userId, userDTO);
@@ -148,7 +186,19 @@ public class UserResource {
     @Path("{id}/roles")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editUser(@PathParam("id") Long userId, @NotEmpty(message = "1001-Roles cannot be empty") List<Role.Name> roles) {
+    @Operation(
+        summary = "Edits the Roles of a User",
+        description = "Edits Roles of a User, if authorized to do so",
+        operationId = "PUT_users_details")
+    @APIResponse(
+        responseCode = "200",
+        description = "Returns the edited user with new Roles",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(ref = "#/components/schemas/UserDTO")))
+    @APIResponse(
+        responseCode = "400",
+        description = "A number of input parameters were not fit to edit user Roles. Returns a list of the Errors",
+        content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(type = SchemaType.ARRAY, implementation = ErrorDTO.class)))
+    public Response editUseRoles(@PathParam("id") Long userId, @NotEmpty(message = "1001-Roles cannot be empty") List<Role.Name> roles) {
 
         if (roles.contains(Role.Name.GOD)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO(1, "There can only be one GOD")).build();
