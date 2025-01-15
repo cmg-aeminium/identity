@@ -24,6 +24,7 @@ import pt.cmg.aeminium.datamodel.users.entities.identity.User;
         "email": "jdf@mail.com",
         "language": "en-UK",
         "status": "ACTIVE",
+        "createdAt": 128976547311,
         "roles" : ["GOD", "SCHOLAR"]}
     """)
 public record UserDTO(
